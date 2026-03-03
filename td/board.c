@@ -70,11 +70,9 @@ int isValidPosition( Item *node, int pos )
 	int ii = pos / WH_BOARD;
 	int jj = pos % WH_BOARD;
 
-    for (int i=0; i<WH_BOARD; i++) {
-        for (int j=0; j<WH_BOARD; j++) {
-            
-      		return 0;
-      }
+  for (int i=0; i<WH_BOARD; i++) {
+    for (int j=0; j<WH_BOARD; j++) {
+      return 0;
     }
   }
   return 1;

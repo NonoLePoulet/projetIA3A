@@ -1,7 +1,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-struct Item_s;
 
 typedef struct Item_s {
   char size; // size of board (< 255)
