@@ -1,5 +1,5 @@
 #include <stdio.h>
-//#include <malloc.h>
+#include <malloc.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <math.h>
@@ -57,18 +57,12 @@ void initBoard(Item *node, char *board) {
 // Return 0 if all queens are placed. Positive otherwise
 // ie: nb queens that still need to be placed.
 double evaluateBoard(Item *node) {                                     //Cette fonction
-  int nb = WH_BOARD;
-
-  char c = node->depth;
-
-	if (strcmp(node->size, c )==0)
+	if (node->depth == WH_BOARD)
   {
     return 0;
   }
   
-  nb = nb-node->depth;
-  
-  return nb;
+  return WH_BOARD-node->depth;
 }
 
 // Test if position pos is valid with respect to node's state
