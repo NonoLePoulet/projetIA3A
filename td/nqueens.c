@@ -71,27 +71,27 @@ void bfs( void )
 }
 
 
-// int main()
-// {
-// 	/* init lists */
-//   initList(&openList_p);
-//   initList(&closedList_p);
+int main()
+{
+	/* init lists */
+  initList(&openList_p);
+  initList(&closedList_p);
 
 	
-//   printf("\nInitial:");
-//   Item *initial_state = initGame();
-//   printBoard( initial_state );
+  printf("\nInitial:");
+  Item *initial_state = initGame();
+  printBoard( initial_state );
 
-//   printf("\nSearching ...\n");
+  printf("\nSearching ...\n");
   
-//   addLast( &openList_p, initial_state );
+  addLast( &openList_p, initial_state );
 
-//   bfs();
-// 	printf("Finished!\n");
+  bfs();
+	printf("Finished!\n");
   
-// 	/* clean lists */
-// 	cleanupList( &openList_p );
-//   cleanupList( &closedList_p );
+	/* clean lists */
+	cleanupList( &openList_p );
+  cleanupList( &closedList_p );
 	
-//   return 0;
-// }
+  return 0;
+}

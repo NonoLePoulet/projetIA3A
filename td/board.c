@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "board.h"
+#include <string.h>
 
 
 // Initialize a new Game for the nQueens problem: an empty board..
@@ -15,7 +16,7 @@ Item *initGame()
 	char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
 	for (int i=0; i<MAX_BOARD; i++) initial[i] = 0;
 
-    node = nodeAlloc();
+  node = nodeAlloc();
 	initBoard(node, initial);
   
   node->depth = 0;
@@ -47,7 +48,7 @@ void initBoard(Item *node, char *board) {
 	assert( node );
 	
 	node->size = MAX_BOARD;
-    node->board = calloc(MAX_BOARD, sizeof(char));
+  node->board = calloc(MAX_BOARD, sizeof(char));
   
 	/* Copy board */
     
@@ -55,11 +56,18 @@ void initBoard(Item *node, char *board) {
 
 // Return 0 if all queens are placed. Positive otherwise
 // ie: nb queens that still need to be placed.
-double evaluateBoard(Item *node) {
+double evaluateBoard(Item *node) {                                     //Cette fonction
   int nb = WH_BOARD;
 
-	// complete
-    
+  char c = node->depth;
+
+	if (strcmp(node->size, c )==0)
+  {
+    return 0;
+  }
+  
+  nb = nb-node->depth;
+  
   return nb;
 }
 
@@ -70,11 +78,12 @@ int isValidPosition( Item *node, int pos )
 	int ii = pos / WH_BOARD;
 	int jj = pos % WH_BOARD;
 
-  for (int i=0; i<WH_BOARD; i++) {
-    for (int j=0; j<WH_BOARD; j++) {
-      return 0;
+    for (int i=0; i<WH_BOARD; i++) {
+        for (int j=0; j<WH_BOARD; j++) {
+            
+      		return 0;
+      }
     }
-  }
   return 1;
 }
 
@@ -85,11 +94,15 @@ Item *getChildBoard( Item *node, int pos )
   
   if ( isValidPosition(node, pos) ) {
 
-    /* allocate and init child node */
+    child_p= nodeAlloc();   /* allocate and init child node */
 
-		/* Make move */
+		node->next = child_p; /* Make move */
+    child_p->depth = node->depth + 1;
+    child_p->board = node->board;
+    child_p ->size = node->size;
 
-		/* link child to parent for backtrack */
+    
+		child_p->parent = node; /* link child to parent for backtrack */
       
   }
 
