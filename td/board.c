@@ -24,6 +24,22 @@ Item *initGame()
   return node;
 }
 
+Item *initGameKnight(){
+  int i;
+  Item *node;
+  char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
+  initial[0] = 1;
+  for (int i=1; i<MAX_BOARD; i++) initial[i] = 0;
+
+  node = nodeAlloc();
+	initBoard(node, initial);
+
+  node->depth = 0;
+  return node;
+  
+}
+
+
 // print a board
 void printBoard( Item *node )
 {
@@ -59,16 +75,16 @@ void initBoard(Item *node, char *board) {
 // Return 0 if all queens are placed. Positive otherwise
 // ie: nb queens that still need to be placed.
 double evaluateBoard(Item *node) {                                    //Cette fonction
-
-  //compare the tree depth with the width of the board
-	if (node->depth == WH_BOARD)
-  {
-    return 0;
-  }
   
   //if the width is bigger, returns the difference
   return WH_BOARD-node->depth;
 }
+
+double evaluateBoardKnights(Item *node){
+    return node->depth;
+}
+
+
 
 // Test if position pos is valid with respect to node's state
 // nQueens -> not same row ; not same column ; not same diagonal
