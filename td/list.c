@@ -49,7 +49,7 @@ Item* onList( list_t *list, char *board)
 {
   Item* a = list->first;
   while (a != NULL){
-    if (strcmp(a->board, board) == 0)
+    if (memcmp(a->board, board, a->size) == 0)
     { 
       return a;
     }
@@ -192,75 +192,75 @@ void printList( list_t list ) {
 
 // TEST LIST
 
-int main()
-{
-  Item *item, *node;
-  char str[3];
+// int main()
+// {
+//   Item *item, *node;
+//   char str[3];
 
-  list_t openList;
+//   list_t openList;
   
-  initList( &openList );
+//   initList( &openList );
 
-  for (int i=0; i<10; i++) {
-    item = nodeAlloc();
-    item->f = i;
-    sprintf(str, "%2d", i);
-    item->board = strdup(str);
-    item->size = 3;
-    addLast( &openList, item );
-  }
+//   for (int i=0; i<10; i++) {
+//     item = nodeAlloc();
+//     item->f = i;
+//     sprintf(str, "%2d", i);
+//     item->board = strdup(str);
+//     item->size = 3;
+//     addLast( &openList, item );
+//   }
 
-    printList(openList);
-    printf("\n");
+//     printList(openList);
+//     printf("\n");
     
-  for (int i=20; i<25; i++) {
-    item = nodeAlloc();
-    item->f = i;
-    item->size = 3;
-    sprintf(str, "%2d", i);
-    item->board = strdup(str);
-    addFirst( &openList, item );
-  }	
+//   for (int i=20; i<25; i++) {
+//     item = nodeAlloc();
+//     item->f = i;
+//     item->size = 3;
+//     sprintf(str, "%2d", i);
+//     item->board = strdup(str);
+//     addFirst( &openList, item );
+//   }	
 
-  printList(openList);
-  printf("\n");
+//   printList(openList);
+//   printf("\n");
 
-    node = popFirst(&openList);
-    if (node) printf("first: %.2f\n", node->f);
-    printList(openList);
-    printf("\n");
+//     node = popFirst(&openList);
+//     if (node) printf("first: %.2f\n", node->f);
+//     printList(openList);
+//     printf("\n");
 
-    node = popLast(&openList);
-    if (node) printf("last: %.2f\n", node->f);
-    printList(openList);
-    printf("\n");
+//     node = popLast(&openList);
+//     if (node) printf("last: %.2f\n", node->f);
+//     printList(openList);
+//     printf("\n");
     
-  node = popBest( &openList );
-  printf("best node = %.2f\n", node->f);
-  printList(openList);
-  printf("\n");
+//   node = popBest( &openList );
+//   printf("best node = %.2f\n", node->f);
+//   printList(openList);
+//   printf("\n");
 
-  strcpy(str, "23");
-  node = onList(&openList, str);
-  if (node) printf("found %s: %.2f!\n", str, node->f); 
-  printList(openList);
-  printf("\n");
+//   strcpy(str, "23");
+//   node = onList(&openList, str);
+//   if (node) printf("found %s: %.2f!\n", str, node->f); 
+//   printList(openList);
+//   printf("\n");
 
-  node = popFirst(&openList);
+//   node = popFirst(&openList);
 	
-  item = nodeAlloc();
-  item->f = 50;
-  item->size = 3;
-  sprintf(str, "50");
-  item->board = strdup(str);
-  addLast( &openList, item );
+//   item = nodeAlloc();
+//   item->f = 50;
+//   item->size = 3;
+//   sprintf(str, "50");
+//   item->board = strdup(str);
+//   addLast( &openList, item );
 
   
 
-  printf("clean\n");	
-  cleanupList(&openList);
-  printList(openList);
-  printf("\n");
+//   printf("clean\n");	
+//   cleanupList(&openList);
+//   printList(openList);
+//   printf("\n");
   
-  return 0;
-}
+//   return 0;
+// }
