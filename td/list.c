@@ -22,7 +22,6 @@ Item *nodeAlloc()
   return node;
 }
 
-
 void freeItem( Item *node )
 {
   if (node && node->board) free(node->board);
@@ -45,87 +44,138 @@ int listCount( list_t *list )
 	return list->numElements;
 }
 
-// return an item with corresponding board , or null
+// return an item with corresponding board, or null
 Item* onList( list_t *list, char *board)
 {
-  if (list->first == NULL)
-  {
-    return NULL;
+  Item* a = list->first;
+  while (a != NULL){
+    if (strcmp(a->board, board) == 0)
+    { 
+      return a;
+    }
+    a = a->next;
   }
-  
-  else if (list->first->board == board)
-  {
-    return list->first;
-  }
-  else
-  {
-    return onList(list->first->next, board);
-  }
-  
+  return NULL;
 }
 
 // return and remove first item
 Item *popFirst( list_t *list ) //
 {
-	Item *item = nodeAlloc();
+  if (list->numElements==0)
+  {
+    return NULL;
+  }
+  
+	Item *item;
   item = list->first;
   list->first = item->next;
+
+  if (list->first !=NULL)
+  {
+    list->first->prev == NULL;
+  }
+  else
+  {
+    list->last == NULL;
+  }
+  
+
+  list->numElements--;
 	return item;
 }
 
 // return and remove last item
 Item *popLast( list_t *list ) //
 {
-	Item *item = nodeAlloc();
+  if (list->numElements==0)
+  {
+    return NULL;
+  }
+	Item *item;
   item = list->last;
   list->last = item->prev;
+
+  if (list->last != NULL)
+  {
+    list->last->next = NULL;
+  }
+  else
+  {
+    list->first = NULL;
+  }
+
+  list->numElements--;
   return item;
 }
 
 // remove a node from list
-void delList( list_t *list, Item *node)
-{
-  int i = 0;
-  if (onList(list, node->board) == 0)
+void delList( list_t *list, Item *node) {
+  if (list == NULL || node == NULL)
   {
-    return NULL;
-  }
-  else
-  {
-    list a = 
-    while (i = 0)
-    {
-      if (list->first = node)
-      {
-        Item *b = list->first;
-
-      }
-      
-    }
-    
+    return;
   }
   
+  if (node->prev != NULL) {
+    node->prev->next = node->next;
+  } else {
+    list->first = node->next;
+  }
+  
+  if (node->next != NULL) {
+    node->next->prev = node->prev;
+  } else {
+    list->last = node->prev; 
+  }
+
+  list->numElements--;
+  freeItem(node);
 }
 
 // return and remove best item with minimal f value
 Item *popBest( list_t *list ) // and remove the best board from the list.
 {
+  Item *item = NULL;
   return item;
 }
 
  // add item in top
-void addFirst( list_t *list, Item *node ) // add in head
+void addFirst( list_t *list, Item *node ) 
 {
+  node->prev = NULL; 
+  node->next = list->first;
+
+  if (list->numElements == 0) {
+    list->last = node; // Si la liste est vide, le noeud devient le dernier
+  } else {
+    list->first->prev = node; // Sinon, on l'attache à l'ancien dernier
+  }
   
+  list->first = node;
+  list->numElements++;
 }
 
  // add item in queue
-void addLast( list_t *list, Item *node ) // add in tail
+void addLast( list_t *list, Item *node ) 
 {
+  node->next = NULL; 
+  node->prev = list->last;
+
+  if (list->numElements == 0) {
+    list->first = node; // Si la liste est vide, le noeud devient le premier
+  } else {
+    list->last->next = node; // Sinon, on l'attache à l'ancien dernier
+  }
+  
+  list->last = node;
+  list->numElements++;
 }
 
 void cleanupList( list_t *list )
 {
+  int N = list->numElements;
+  for(int i=0;i<N;i++){
+    freeItem(popFirst(list));
+  }
 	
 }
 
@@ -214,4 +264,3 @@ int main()
   
   return 0;
 }
-
