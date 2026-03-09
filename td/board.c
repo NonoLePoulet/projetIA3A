@@ -56,12 +56,15 @@ void initBoard(Item *node, char *board) {
 
 // Return 0 if all queens are placed. Positive otherwise
 // ie: nb queens that still need to be placed.
-double evaluateBoard(Item *node) {                                     //Cette fonction
+double evaluateBoard(Item *node) {                                    //Cette fonction
+
+  //compare the tree depth with the width of the board
 	if (node->depth == WH_BOARD)
   {
     return 0;
   }
   
+  //if the width is bigger, returns the difference
   return WH_BOARD-node->depth;
 }
 
