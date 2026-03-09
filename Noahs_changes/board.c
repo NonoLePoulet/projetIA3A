@@ -50,25 +50,21 @@ void initBoard(Item *node, char *board) {
 	node->size = MAX_BOARD;
   node->board = calloc(MAX_BOARD, sizeof(char));
   
-	/* Copy board */
+	for (int i = 0; i < MAX_BOARD; i++) {
+    node->board[i] = board[i];
+  }
     
 }
 
 // Return 0 if all queens are placed. Positive otherwise
 // ie: nb queens that still need to be placed.
 double evaluateBoard(Item *node) {                                     //Cette fonction
-  int nb = WH_BOARD;
-
-  char c = node->depth;
-
-	if (strcmp(node->size, c )==0)
+	if (node->depth == WH_BOARD)
   {
     return 0;
   }
   
-  nb = nb-node->depth;
-  
-  return nb;
+  return WH_BOARD-node->depth;
 }
 
 // Test if position pos is valid with respect to node's state
