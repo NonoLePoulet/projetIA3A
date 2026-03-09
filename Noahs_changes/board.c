@@ -74,11 +74,15 @@ int isValidPosition( Item *node, int pos )
 	int ii = pos / WH_BOARD;
 	int jj = pos % WH_BOARD;
 
-    for (int i=0; i<WH_BOARD; i++) {
-        for (int j=0; j<WH_BOARD; j++) {
-            
+    for (int k=0; k<MAX_BOARD; k++) {
+        if (node->board[k] == 1) { 
+          int r = k / WH_BOARD;
+          int c = k % WH_BOARD;
+
+          if (r == ii || c == jj || abs(r - ii) == abs(c - jj)) {
       		return 0;
-      }
+          }
+        }
     }
   return 1;
 }
@@ -92,10 +96,10 @@ Item *getChildBoard( Item *node, int pos )
 
     child_p= nodeAlloc();   /* allocate and init child node */
 
-		node->next = child_p; /* Make move */
+		initBoard(child_p, node->board);
     child_p->depth = node->depth + 1;
-    child_p->board = node->board;
-    child_p ->size = node->size;
+
+    child_p->board[pos] = 1; 
 
     
 		child_p->parent = node; /* link child to parent for backtrack */
