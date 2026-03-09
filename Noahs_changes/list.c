@@ -61,9 +61,25 @@ Item* onList( list_t *list, char *board)
 // return and remove first item
 Item *popFirst( list_t *list ) //
 {
+  if (list->numElements==0)
+  {
+    return NULL;
+  }
+  
 	Item *item;
   item = list->first;
   list->first = item->next;
+
+  if (list->first !=NULL)
+  {
+    list->first->prev == NULL;
+  }
+  else
+  {
+    list->last == NULL;
+  }
+  
+
   list->numElements--;
 	return item;
 }
@@ -71,24 +87,48 @@ Item *popFirst( list_t *list ) //
 // return and remove last item
 Item *popLast( list_t *list ) //
 {
+  if (list->numElements==0)
+  {
+    return NULL;
+  }
 	Item *item;
   item = list->last;
   list->last = item->prev;
+
+  if (list->last != NULL)
+  {
+    list->last->next = NULL;
+  }
+  else
+  {
+    list->first = NULL;
+  }
+
   list->numElements--;
   return item;
 }
 
 // remove a node from list
 void delList( list_t *list, Item *node) {
-  assert(onList(list,node->board));
-  Item*prev;
-  Item*next;
-  prev = node->prev;
-  next = node->next;
-  freeItem(node);
-  prev->next = next;
-  next->prev = prev;
+  if (list == NULL || node == NULL)
+  {
+    return;
+  }
+  
+  if (node->prev != NULL) {
+    node->prev->next = node->next;
+  } else {
+    list->first = node->next;
+  }
+  
+  if (node->next != NULL) {
+    node->next->prev = node->prev;
+  } else {
+    list->last = node->prev; 
+  }
+
   list->numElements--;
+  freeItem(node);
 }
 
 // return and remove best item with minimal f value
@@ -101,8 +141,8 @@ Item *popBest( list_t *list ) // and remove the best board from the list.
  // add item in top
 void addFirst( list_t *list, Item *node ) 
 {
-  node->next = NULL; 
-  node->prev = list->first;
+  node->prev = NULL; 
+  node->next = list->first;
 
   if (list->numElements == 0) {
     list->last = node; // Si la liste est vide, le noeud devient le dernier
