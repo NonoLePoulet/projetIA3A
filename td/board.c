@@ -14,7 +14,7 @@ Item *initGame()
   Item *node;
 
 	char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
-	for (int i=0; i<MAX_BOARD; i++) initial[i] = 0;
+	for (i=0; i<MAX_BOARD; i++) initial[i] = 0;
 
   node = nodeAlloc();
 	initBoard(node, initial);
@@ -29,7 +29,7 @@ Item *initGameKnights(){
   Item *node;
   char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
   initial[0] = 1;
-  for (int i=1; i<MAX_BOARD; i++) initial[i] = 0;
+  for (i=1; i<MAX_BOARD; i++) initial[i] = 0;
 
   node = nodeAlloc();
 	initBoard(node, initial);
@@ -81,7 +81,8 @@ double evaluateBoard(Item *node) {                                    //Cette fo
 }
 
 double evaluateBoardKnights(Item *node){
-    return node->depth;
+    //return MAX_BOARD-node->depth;
+    return 3-node->depth;
 }
 
 
@@ -111,28 +112,18 @@ int isValidPositionKnights( Item *node, int pos, int cur_pos)
   int ii_cur = cur_pos / WH_BOARD;
   int jj_cur = cur_pos % WH_BOARD;
 
-  if(jj_cur == 0){
-    if(cur_pos+6 == pos || cur_pos+10 == pos || cur_pos+15 == pos || cur_pos+17 == pos) return 1;
+  int ii = pos / WH_BOARD;
+  int jj = pos % WH_BOARD;
+
+  if(jj_cur-2 == jj || jj_cur+2 == jj){
+    if(ii_cur+1 == ii)return 1;
+    if(ii_cur-1 == ii)return 1;
   }
-  else if(jj_cur == WH_BOARD){
-    if(cur_pos-6 == pos || cur_pos-10 == pos || cur_pos-15 == pos || cur_pos-17 == pos) return 1;
+  if(ii_cur-2 == ii || ii_cur+2 == ii){
+    if(jj_cur+1 == jj)return 1;
+    if(jj_cur-1 == jj)return 1;
   }
-  else if(ii_cur == 0){
-    if(cur_pos+10 == pos || cur_pos+17 == pos || cur_pos-6 == pos || cur_pos-15 == pos) return 1;
-  }
-  else if(ii_cur == WH_BOARD){
-    if(cur_pos-10 == pos || cur_pos-17 == pos || cur_pos+6 == pos || cur_pos+15 == pos) return 1;
-  }
-  else{
-    if(cur_pos-6 == pos ||
-       cur_pos-10 == pos ||
-       cur_pos-15 == pos || 
-       cur_pos-17 == pos ||
-       cur_pos+6 == pos ||
-       cur_pos+10 == pos ||
-       cur_pos+15 == pos || 
-       cur_pos+17 == pos) return 1;
-  }
+
   return 0;
 }
 
@@ -142,6 +133,27 @@ Item *getChildBoard( Item *node, int pos )
   Item *child_p = NULL;
   
   if ( isValidPosition(node, pos) ) {
+
+    child_p= nodeAlloc();   /* allocate and init child node */
+
+		initBoard(child_p, node->board);
+    child_p->depth = node->depth + 1;
+
+    child_p->board[pos] = 1; 
+
+    
+		child_p->parent = node; /* link child to parent for backtrack */
+      
+  }
+
+  return child_p;
+}
+
+Item *getChildBoardKnights( Item *node, int pos, int cur_pos)
+{
+  Item *child_p = NULL;
+  
+  if ( isValidPositionKnights(node, pos, cur_pos) ) {
 
     child_p= nodeAlloc();   /* allocate and init child node */
 
