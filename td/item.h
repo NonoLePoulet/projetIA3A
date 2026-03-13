@@ -8,6 +8,7 @@ typedef struct Item_s {
   char *board; // board is an array of small int
   char blank;
   float f, g, h; // cost, heuristic, ...
+  //float cost; //cout du noeud
   int depth;
   struct Item_s *parent; // needed for tree structure in game search
   struct Item_s *prev, *next; // needed for chained list 
