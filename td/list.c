@@ -72,11 +72,11 @@ Item *popFirst( list_t *list ) //
 
   if (list->first !=NULL)
   {
-    list->first->prev == NULL;
+    list->first->prev = NULL;
   }
   else
   {
-    list->last == NULL;
+    list->last = NULL;
   }
   
 
