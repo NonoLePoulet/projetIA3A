@@ -153,7 +153,7 @@ Item *getChildBoardKnights( Item *node, int pos, int cur_pos)
 {
   Item *child_p = NULL;
   
-  if ( isValidPositionKnights(node, pos, cur_pos) ) {
+  if (isValidPositionKnights(node, pos, cur_pos) ) {
 
     child_p= nodeAlloc();   /* allocate and init child node */
 
