@@ -24,7 +24,7 @@ Item *initGame()
   return node;
 }
 
-Item *initGameKnight(){
+Item *initGameKnights(){
   int i;
   Item *node;
   char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
@@ -104,6 +104,36 @@ int isValidPosition( Item *node, int pos )
         }
     }
   return 1;
+}
+
+int isValidPositionKnights( Item *node, int pos, int cur_pos)
+{
+  int ii_cur = cur_pos / WH_BOARD;
+  int jj_cur = cur_pos % WH_BOARD;
+
+  if(jj_cur == 0){
+    if(cur_pos+6 == pos || cur_pos+10 == pos || cur_pos+15 == pos || cur_pos+17 == pos) return 1;
+  }
+  else if(jj_cur == WH_BOARD){
+    if(cur_pos-6 == pos || cur_pos-10 == pos || cur_pos-15 == pos || cur_pos-17 == pos) return 1;
+  }
+  else if(ii_cur == 0){
+    if(cur_pos+10 == pos || cur_pos+17 == pos || cur_pos-6 == pos || cur_pos-15 == pos) return 1;
+  }
+  else if(ii_cur == WH_BOARD){
+    if(cur_pos-10 == pos || cur_pos-17 == pos || cur_pos+6 == pos || cur_pos+15 == pos) return 1;
+  }
+  else{
+    if(cur_pos-6 == pos ||
+       cur_pos-10 == pos ||
+       cur_pos-15 == pos || 
+       cur_pos-17 == pos ||
+       cur_pos+6 == pos ||
+       cur_pos+10 == pos ||
+       cur_pos+15 == pos || 
+       cur_pos+17 == pos) return 1;
+  }
+  return 0;
 }
 
 // Return a new item where a new queen is added at position pos if possible. NULL if not valid

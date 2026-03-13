@@ -11,10 +11,18 @@
 
 Item *initGame();
 
+Item *initGameKnights();
+
 void initBoard(Item *node, char *board);
 
 Item *getChildBoard( Item *node, int pos );
 
+int isValidPosition( Item *node, int pos);
+
+int isValidPositionKnights( Item *node, int pos, int cur_pos);
+
 double evaluateBoard( Item *node );
+
+double evaluateBoardKnights(Item *node);
 	
 void printBoard( Item *board );
