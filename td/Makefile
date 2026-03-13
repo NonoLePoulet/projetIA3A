@@ -1,15 +1,15 @@
 
 all: nqueens.o board.o list.o
-	gcc - c -Wall -g nqueens.o board.o list.o
+	gcc -g -Wall nqueens.o board.o list.o -o nqueens
 
-list.o: list.c list.h
-	gcc -c -Wall -g list.c
+list.o: list.c 
+	gcc -c -g -Wall list.c 
 
-board.o: board.c board.h
-	gcc -c -Wall -g board.c
+board.o: board.c
+	gcc -c  -g -Wall board.c 
 
 nqueens.o: nqueens.c
-	gcc -c -Wall -g nqueens.c
+	gcc -c -g -Wall nqueens.c
 
 clean:
 	rm *.o
