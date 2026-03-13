@@ -1,9 +1,17 @@
 #include "raylib.h"
+#include "raymath.h"
+#include <time.h>
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 #define SQUARES_PER_SIDE 10
 #define TOTAL_SQUARES 40
+#define ANIMATION_SPEED 20.0f
+
+void waitFor (unsigned int secs) {
+    unsigned int retTime = time(0) + secs;   // Get finishing time.
+    while (time(0) < retTime);               // Loop until it arrives.
+}
 
 // Function to calculate the X and Y screen coordinates based on board index (0-39)
 Vector2 GetBoardCoordinates(int index, int cellSize) {
@@ -32,18 +40,35 @@ Vector2 GetBoardCoordinates(int index, int cellSize) {
     return pos;
 }
 
+int playermove(int playerPos, int cellSize){
+     // Current square index
+    Vector2 currentVisualpos = GetBoardCoordinates(playerPos, cellSize);
+    playerPos = (playerPos + 1) % TOTAL_SQUARES;
+    Vector2 playerWorldPos = GetBoardCoordinates(playerPos, cellSize);
+        if (Vector2Distance(currentVisualpos, playerWorldPos) > 0.1f) {
+            // Vector2Lerp moves a percentage of the remaining distance every frame
+            currentVisualpos = Vector2Lerp(currentVisualpos, playerWorldPos, ANIMATION_SPEED * GetFrameTime());
+        }
+    DrawCircle(currentVisualpos.x + cellSize/2, currentVisualpos.y + cellSize/2, 15, GREEN);
+    return playerPos;
+    
+}
+
 int main() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib - Simple Monopoly Board");
     SetTargetFPS(60);
-
-    int playerPos = 0; // Current square index
     int cellSize = SCREEN_WIDTH / (SQUARES_PER_SIDE + 1);
-
+    int playerPos = 0;
     while (!WindowShouldClose()) {
         // Update: Move player on Space press
+        int roll ; 
         if (IsKeyPressed(KEY_SPACE)) {
-            playerPos = (playerPos + 1) % TOTAL_SQUARES;
+            roll = (GetRandomValue(1, 6) + GetRandomValue(1, 6));
+            for(int i = 0 ; i<=roll ; i++ ){
+                playerPos = playermove(playerPos ,cellSize);
+            }
         }
+
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -58,14 +83,14 @@ int main() {
             // Label the squares (optional)
             DrawText(TextFormat("%d", i), pos.x + 5, pos.y + 5, 10, GRAY);
         }
-
-        // 2. Draw the Player
-        Vector2 playerWorldPos = GetBoardCoordinates(playerPos, cellSize);
-        DrawCircle(playerWorldPos.x + cellSize/2, playerWorldPos.y + cellSize/2, 15, GREEN);
+        
+        Vector2 currentVisualpos = GetBoardCoordinates(playerPos,cellSize);
+        DrawCircle(currentVisualpos.x + cellSize/2, currentVisualpos.y + cellSize/2, 15, GREEN);
 
         // UI Instructions
         DrawText("Press SPACE to move", SCREEN_WIDTH/2 - 70, SCREEN_HEIGHT/2, 20, DARKGRAY);
         DrawText(TextFormat("Square: %d", playerPos), SCREEN_WIDTH/2 - 40, SCREEN_HEIGHT/2 + 30, 20, MAROON);
+        DrawText(TextFormat("You rolled: %d", roll), SCREEN_WIDTH/2 - 40, SCREEN_HEIGHT/2 + 50, 20, RED);
 
         EndDrawing();
     }
