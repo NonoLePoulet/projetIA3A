@@ -61,7 +61,7 @@ int main() {
 
         // 2. Draw the Player
         Vector2 playerWorldPos = GetBoardCoordinates(playerPos, cellSize);
-        DrawCircle(playerWorldPos.x + cellSize/2, playerWorldPos.y + cellSize/2, 15, RED);
+        DrawCircle(playerWorldPos.x + cellSize/2, playerWorldPos.y + cellSize/2, 15, GREEN);
 
         // UI Instructions
         DrawText("Press SPACE to move", SCREEN_WIDTH/2 - 70, SCREEN_HEIGHT/2, 20, DARKGRAY);
