@@ -8,10 +8,6 @@
 #define TOTAL_SQUARES 40
 #define ANIMATION_SPEED 20.0f
 
-void waitFor (unsigned int secs) {
-    unsigned int retTime = time(0) + secs;   // Get finishing time.
-    while (time(0) < retTime);               // Loop until it arrives.
-}
 
 // Function to calculate the X and Y screen coordinates based on board index (0-39)
 Vector2 GetBoardCoordinates(int index, int cellSize) {
@@ -51,7 +47,6 @@ int playermove(int playerPos, int cellSize){
         }
     DrawCircle(currentVisualpos.x + cellSize/2, currentVisualpos.y + cellSize/2, 15, GREEN);
     return playerPos;
-    
 }
 
 int main() {
@@ -64,7 +59,7 @@ int main() {
         int roll ; 
         if (IsKeyPressed(KEY_SPACE)) {
             roll = (GetRandomValue(1, 6) + GetRandomValue(1, 6));
-            for(int i = 0 ; i<=roll ; i++ ){
+            for(int i = 0 ; i<roll ; i++ ){
                 playerPos = playermove(playerPos ,cellSize);
             }
         }
