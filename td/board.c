@@ -24,13 +24,12 @@ Item *initGame()
   return node;
 }
 
-Item *initGameKnights(){
+Item *initGameKnights(int start_pos){
   int i;
   Item *node;
   char *initial = (char*)malloc(MAX_BOARD*sizeof(char));
-  initial[0] = 1;
-  for (i=1; i<MAX_BOARD; i++) initial[i] = 0;
-
+  for (i=0; i<MAX_BOARD; i++) initial[i] = 0;
+  initial[start_pos] = 1;
   node = nodeAlloc();
 	initBoard(node, initial);
 
@@ -82,7 +81,7 @@ double evaluateBoard(Item *node) {                                    //Cette fo
 
 double evaluateBoardKnights(Item *node){
     //return MAX_BOARD-node->depth;
-    return 3-node->depth;
+    return 7-node->depth;
 }
 
 
@@ -114,6 +113,8 @@ int isValidPositionKnights( Item *node, int pos, int cur_pos)
 
   int ii = pos / WH_BOARD;
   int jj = pos % WH_BOARD;
+
+  if(node->board[pos] == 1) return 0;
 
   if(jj_cur-2 == jj || jj_cur+2 == jj){
     if(ii_cur+1 == ii)return 1;

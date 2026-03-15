@@ -7,6 +7,9 @@
 #include "list.h"
 #include "board.h"
 
+#define start_pos 2
+#define end_pos 20
+
 
 list_t openList_p;
 list_t closedList_p;
@@ -34,33 +37,33 @@ void showSolution( Item *goal )
 void bfs( void )
 {
   Item *cur_node, *child_p;
-  int cur_pos = 0;
+  int cur_pos;
   int i;
 
-  while ( listCount(&openList_p) != 0 ) { /* While items are on the open list */
+  while (listCount(&openList_p) != 0 ) { /* While items are on the open list */
    	
     /* Get the first item on the open list */
     cur_node = popFirst(&openList_p);
-		
-    printf("%d  %f\n", listCount(&openList_p), evaluateBoardKnights( cur_node ));
+    cur_pos = cur_node->cur_pos;
+		printf("%d\n", cur_pos);
+    printf("%d  %f\n", listCount(&openList_p), evaluateBoardKnights(cur_node));
 
     /* Add it to the "visited" list */
 
     /* Do we have a solution? */
-    if ( evaluateBoardKnights(cur_node) == 0.0 ) {
+    if (cur_node->cur_pos == end_pos){
       showSolution(cur_node);
       return;
-
     } 
 
     else {
       /* Enumerate adjacent states */
-        for (i = 0; i < MAX_BOARD; i++) {
-            child_p = getChildBoardKnights( cur_node, i, cur_pos);
+        for (i = 0; i<MAX_BOARD;i++) {
+            child_p = getChildBoardKnights(cur_node, i, cur_pos);
    			
             if (child_p != NULL) { // it's a valid child!
 
-                  cur_pos = i;
+                  child_p->cur_pos=i;
 	  			        addLast( &openList_p, child_p );
                 
             }
@@ -82,11 +85,11 @@ void dfs()
     /* Get the first item on the open list */
     cur_node = popFirst(&openList_p);
 		
-    printf("%d  %f\n", listCount(&openList_p), evaluateBoardKnights( cur_node ));
+    printf("%d  %f\n", listCount(&openList_p), evaluateBoardKnights(cur_node));
 
 
     /* Do we have a solution? */
-    if ( evaluateBoardKnights(cur_node) == 0.0 ) {
+    if (evaluateBoardKnights(cur_node) == 0.0) {
       showSolution(cur_node);
       return;
 
@@ -95,7 +98,7 @@ void dfs()
     else {
       /* Enumerate adjacent states */
         for (int i = 0; i < MAX_BOARD; i++) {
-            child_p = getChildBoardKnights( cur_node, i, cur_pos);
+            child_p = getChildBoardKnights(cur_node, i, cur_pos);
    			
             if (child_p != NULL) { // it's a valid child!
               
@@ -117,7 +120,8 @@ int main()
 
 	
   printf("\nInitial:");
-  Item *initial_state = initGameKnights();
+  Item *initial_state = initGameKnights(start_pos);
+  initial_state->cur_pos=start_pos;
   printBoard( initial_state );
 
   printf("\nSearching ...\n");

@@ -10,6 +10,7 @@ typedef struct Item_s {
   float f, g, h; // cost, heuristic, ...
   //float cost; //cout du noeud
   int depth;
+  int cur_pos;
   struct Item_s *parent; // needed for tree structure in game search
   struct Item_s *prev, *next; // needed for chained list 
 } Item;

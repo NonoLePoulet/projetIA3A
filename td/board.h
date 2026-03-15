@@ -11,7 +11,7 @@
 
 Item *initGame();
 
-Item *initGameKnights();
+Item *initGameKnights(int start_pos);
 
 void initBoard(Item *node, char *board);
 
