@@ -7,7 +7,7 @@
 Vector2 Player_pos = {0,0};
 Vector2 Player_speed = {0,0};
 
-int main() {
+int main_shooter() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
     SetTargetFPS(60);
 

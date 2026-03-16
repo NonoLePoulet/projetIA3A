@@ -20,7 +20,7 @@ Vector2 GetBoardCoordinates(int index, int cellSize) {
     return (Vector2){ pos.x + cellSize/2.0f, pos.y + cellSize/2.0f };
 }
 
-int main() {
+int main_board() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
     SetTargetFPS(60);
 
