@@ -1,8 +1,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH 1242
+#define SCREEN_HEIGHT 708
 #define MAX_POINTS 36
 
 int main_casino ()
@@ -27,7 +27,10 @@ int main_casino ()
 
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Aller on gambling");
-    Texture2D background = LoadTexture("/home/noah/projetIA3A/projet/roulette2.png");
+    Texture2D background = LoadTexture("src/textures/roulette2.png");
+    Texture2D cursor = LoadTexture("src/textures/link.png");
+    Rectangle source = {0.0f,0.0f,(float)background.width,(float)background.height};
+    Rectangle dest = {0.0f,0.0f,(float)SCREEN_WIDTH,(float)SCREEN_HEIGHT};
     SetTargetFPS(60);
     while (!WindowShouldClose()){
 
@@ -129,10 +132,11 @@ int main_casino ()
         BeginDrawing();
             ClearBackground(BLACK);
 
-            DrawTexture(background, 0, 0, WHITE);
+            DrawTexturePro(background,source,dest,Vector2Zero(),0.0f,WHITE);
 
-            DrawCircleV(Player_pos_cas, 25, DARKBLUE);
-            DrawCircleV(Player_pos_cas2, 25, RED);
+            
+            DrawTexture(cursor,Player_pos_cas.x,Player_pos_cas.y,WHITE);
+            DrawTexture(cursor,Player_pos_cas2.x,Player_pos_cas2.y,WHITE);
 
             // On dessine TOUS les points verts enregistrés grâce à une boucle
             for (int i = 0; i < points_count; i++) {
