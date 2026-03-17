@@ -22,16 +22,8 @@ obj/x64/Debug/projet/main.o: src/main.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h src/main_shooter.c \
- /usr/include/stdlib.h /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/types/clock_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/time_t.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
- /usr/include/x86_64-linux-gnu/bits/endian.h \
- /usr/include/x86_64-linux-gnu/bits/endianness.h
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h src/./jeux/main_board.c \
+ src/./jeux/main_mainshooter.c src/./jeux/main_casino.c
 /usr/include/stdc-predef.h:
 build/external/raylib-master/src/raylib.h:
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
@@ -59,15 +51,6 @@ build/external/raylib-master/src/raymath.h:
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-src/main_shooter.c:
-/usr/include/stdlib.h:
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-/usr/include/time.h:
-/usr/include/x86_64-linux-gnu/bits/time.h:
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
-/usr/include/x86_64-linux-gnu/bits/types/time_t.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-/usr/include/x86_64-linux-gnu/bits/endianness.h:
+src/./jeux/main_board.c:
+src/./jeux/main_mainshooter.c:
+src/./jeux/main_casino.c:
