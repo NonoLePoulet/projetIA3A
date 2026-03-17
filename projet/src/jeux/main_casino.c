@@ -3,7 +3,7 @@
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
-#define MAX_POINTS 100
+#define MAX_POINTS 36
 
 int main_casino ()
 {
@@ -13,11 +13,11 @@ int main_casino ()
     int max_point = score;
     int max_point2 = score2;
 
-    Vector2 Player_pos_cas = {0,0};
-    Vector2 Player_speed_cas = {0,0};
-
-    Vector2 Player_pos_cas2 = {0,0};
+    Vector2 Player_pos_cas2 = {SCREEN_WIDTH-(SCREEN_WIDTH-(SCREEN_WIDTH/4)),600};
     Vector2 Player_speed_cas2 = {0,0};
+
+    Vector2 Player_pos_cas = {SCREEN_WIDTH-(SCREEN_WIDTH/4),600};
+    Vector2 Player_speed_cas = {0,0};
 
     Vector2 points_verts[MAX_POINTS];
     int points_count = 0;
@@ -27,6 +27,7 @@ int main_casino ()
 
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Aller on gambling");
+    Texture2D background = LoadTexture("/home/noah/projetIA3A/projet/roulette2.png");
     SetTargetFPS(60);
     while (!WindowShouldClose()){
 
@@ -57,9 +58,47 @@ int main_casino ()
         Player_pos_cas2.x += Player_speed_cas2.x;
         Player_pos_cas2.y += Player_speed_cas2.y;
 
+        // --- EVITER LES BORDURES
+        if (Player_pos_cas.x < 25)
+        {
+            Player_pos_cas.x = 25;
+        }
 
+        if (Player_pos_cas.x > SCREEN_WIDTH-25)
+        {
+            Player_pos_cas.x = SCREEN_WIDTH-25;
+        }
+        if (Player_pos_cas.y < 25)
+        {
+            Player_pos_cas.y = 25;
+        }
 
-        // --- CRÉATION DES POINTS VERTS ---
+        if (Player_pos_cas.y > SCREEN_WIDTH-25)
+        {
+            Player_pos_cas.y = SCREEN_WIDTH-25;
+        }
+
+        if (Player_pos_cas2.x < 25)
+        {
+            Player_pos_cas2.x = 25;
+        }
+
+        if (Player_pos_cas2.x > SCREEN_WIDTH-25)
+        {
+            Player_pos_cas2.x = SCREEN_WIDTH-25;
+        }
+        if (Player_pos_cas2.y < 25)
+        {
+            Player_pos_cas2.y = 25;
+        }
+
+        if (Player_pos_cas2.y > SCREEN_WIDTH-25)
+        {
+            Player_pos_cas2.y = SCREEN_WIDTH-25;
+        }
+        
+
+        // --- CRÉATION DES POINTS ---
         if(IsKeyPressed(KEY_ENTER)) {
             // On vérifie qu'il reste de la place dans notre tableau de points
             if (points_count < MAX_POINTS) {
@@ -75,8 +114,26 @@ int main_casino ()
             }
         }
 
+
+        // --- SUPPRESION DES POINTS ---
+        if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0)
+        {
+            points_count--;
+        }
+
+        if(IsKeyPressed(KEY_LEFT_CONTROL) && points_count2 != 0)
+        {
+            points_count2--;
+        }
+
         BeginDrawing();
             ClearBackground(BLACK);
+
+            DrawTexture(background, 0, 0, WHITE);
+
+            DrawCircleV(Player_pos_cas, 25, DARKBLUE);
+            DrawCircleV(Player_pos_cas2, 25, RED);
+
             // On dessine TOUS les points verts enregistrés grâce à une boucle
             for (int i = 0; i < points_count; i++) {
                 DrawCircleV(points_verts[i], 10, GREEN); 
@@ -85,13 +142,14 @@ int main_casino ()
                 DrawCircleV(points_jaunes[i], 10, YELLOW); 
             }
 
-            DrawCircleV(Player_pos_cas, 25, DARKBLUE);
-            DrawCircleV(Player_pos_cas2, 25, RED);
+            
 
         EndDrawing();
 
 
     }
+
+    UnloadTexture(background);
     CloseWindow();
     return 0;
 }
