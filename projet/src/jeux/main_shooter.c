@@ -44,15 +44,15 @@ void shooter() {
     srand(time(NULL));
 
     Texture2D SpaceShip = LoadTexture("src/textures/shooter_spaceship.png");
-    Texture2D test;
     Rectangle frameRec = { 0.0f, 0.0f, (float)SpaceShip.width/4, (float)SpaceShip.height };
     int framesCounter = 0;
     int time = 0;
     int framesSpeed = 8;
     int cur_frame = 0;
-    float delay = 300.0f;
+    float delay = 90.0f;
     float bullet_timer = 0;
     int nb_bullet = 0;
+    float textTime = 360;
 
     SetTargetFPS(60);
 
@@ -64,13 +64,13 @@ void shooter() {
         framesCounter++;
         time++;
         bullet_timer++;
-        delay -= 0.15f;
         if (delay<1.0f) delay = 1.0f;
 
         if(bullet_timer > delay){
             bullet_timer = 0;
             fire_bullet(bullet_list,nb_bullet,time);
             nb_bullet++;
+            delay -= 18.0f/(nb_bullet);
         }
         if (framesCounter >= (60/framesSpeed))
         {
