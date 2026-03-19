@@ -5,7 +5,7 @@
 #include "./jeux/main_casino.c"
 
 int main() { 
-    main_casino();
-    //shooter();
+    //main_casino();
+    shooter();
     return 0;
 }

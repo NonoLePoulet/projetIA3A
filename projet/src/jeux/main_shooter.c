@@ -12,6 +12,8 @@ typedef struct _player{
     Vector2 speed;
     Vector2 pos;
     bool is_alive;
+    int cur_frame;
+    Rectangle frameRec;
 } Player;
 
 typedef struct _bullet{
@@ -34,6 +36,10 @@ void fire_bullet(Bullet* list, int index, int time){
     list[index].timer = time;
 }
 
+void explode(Player *player, int index){
+    
+}
+
 
 void shooter() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
@@ -43,41 +49,42 @@ void shooter() {
     player_list[1].pos=(Vector2){500,700};
     srand(time(NULL));
 
-    Texture2D SpaceShip = LoadTexture("src/textures/shooter_spaceship.png");
-    Texture2D test;
-    Rectangle frameRec = { 0.0f, 0.0f, (float)SpaceShip.width/4, (float)SpaceShip.height };
+    Texture2D SpaceShip = LoadTexture("src/textures/shooter_spaceship1.png");
+    player_list[0].frameRec = (Rectangle){ 0.0f, 0.0f, (float)SpaceShip.width/12, (float)SpaceShip.height/5 };
+    player_list[1].frameRec = (Rectangle){ 0.0f, 0.0f, (float)SpaceShip.width/12, (float)SpaceShip.height/5 };
+    player_list[0].is_alive = 1;
+    player_list[1].is_alive = 1;
     int framesCounter = 0;
     int time = 0;
     int framesSpeed = 8;
-    int cur_frame = 0;
-    float delay = 300.0f;
+    float delay = 90.0f;
     float bullet_timer = 0;
     int nb_bullet = 0;
+    float textTime = 360;
 
     SetTargetFPS(60);
-
-    fire_bullet(bullet_list,0,time);
-    bullet_list[0].pos = (Vector2){400,50};
 
     while (!WindowShouldClose()){
 
         framesCounter++;
         time++;
         bullet_timer++;
-        delay -= 0.15f;
         if (delay<1.0f) delay = 1.0f;
 
         if(bullet_timer > delay){
             bullet_timer = 0;
             fire_bullet(bullet_list,nb_bullet,time);
             nb_bullet++;
+            delay -= 18.0f/(nb_bullet);
         }
+        for(int i=0;i<2;++i){
         if (framesCounter >= (60/framesSpeed))
-        {
-            framesCounter = 0;
-            cur_frame++;
-            if (cur_frame > 3) cur_frame = 0;
-            frameRec.x = (float)cur_frame*(float)SpaceShip.width/4;
+            {
+                framesCounter = 0;
+                player_list[i].cur_frame++;
+                if (player_list[i].cur_frame > 3) player_list[i].cur_frame = 0;
+                player_list[i].frameRec.x = (float)player_list[i].cur_frame*(float)SpaceShip.width/12;
+            }
         }
 
 //------------------------------------Input player 1-----------------------------------------------
@@ -110,6 +117,13 @@ void shooter() {
             if(player_list[i].pos.x > SCREEN_WIDTH) player_list[i].pos.x = SCREEN_WIDTH;
             if(player_list[i].pos.y < 0) player_list[i].pos.y = 0;
             if(player_list[i].pos.y > SCREEN_HEIGHT) player_list[i].pos.y = SCREEN_HEIGHT;
+            for(int j=0;j<nb_bullet;++j){
+                if (abs(player_list[i].pos.x-bullet_list[j].pos.x)<16 && abs(player_list[i].pos.y-bullet_list[j].pos.y)<16){
+                    bullet_list[j].display = 0;
+                    player_list[i].is_alive = 0;
+
+                }
+            }
         }
         for (int j=0;j<nb_bullet;++j){
             bullet_list[j].pos.x += bullet_list[j].direction.x;
@@ -120,15 +134,15 @@ void shooter() {
         BeginDrawing();
 
         DrawText(TextFormat("Time : %d s", time/60), 10, 10, 20, WHITE);
-        DrawTextureRec(SpaceShip, frameRec,(Vector2){player_list[0].pos.x-16,player_list[0].pos.y-16}, WHITE);
+        DrawTextureRec(SpaceShip, player_list[0].frameRec,(Vector2){player_list[0].pos.x-16,player_list[0].pos.y-16}, WHITE);
         DrawText("Player1",player_list[0].pos.x-18,player_list[0].pos.y+20, 7, RED);
-        DrawTextureRec(SpaceShip, frameRec,(Vector2){player_list[1].pos.x-16,player_list[1].pos.y-16}, WHITE);
+        DrawTextureRec(SpaceShip, player_list[0].frameRec,(Vector2){player_list[1].pos.x-16,player_list[1].pos.y-16}, WHITE);
         DrawText("Player2",player_list[1].pos.x-18,player_list[1].pos.y+20, 7, BLUE);
         for (int k=0;k<nb_bullet;++k){
             if (bullet_list[k].display == 1) DrawCircle(bullet_list[k].pos.x,bullet_list[k].pos.y,8,RED);
         }
         DrawRectangle(200,0,400,150,WHITE);
-        DrawText(TextFormat("%d", nb_bullet), 400, 300, 20, WHITE);
+        DrawText(TextFormat("%d",player_list[0].is_alive), 400, 300, 20, WHITE);
 
         EndDrawing();
     }
