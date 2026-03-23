@@ -45,7 +45,7 @@ int main_casino ()
     float angle_bille = 0.0f;
     float rayon_orbite = 180.0f; // La taille du cercle autour duquel le point tourne
     Vector2 centre_orbite = { 294, 414 }; // Le centre de l'écran
-    float vitesse_rotation = ((rand()%30)+20)/100.0f; // Plus le chiffre est grand, plus ça tourne vite
+    float vitesse_rotation = ((rand()%50)+rand()%30)/100.0f; // Plus le chiffre est grand, plus ça tourne vite
     Vector2 pos_bille = { 0, 0 };
 
 
@@ -82,42 +82,42 @@ int main_casino ()
         Player_pos_cas2.y += Player_speed_cas2.y;
 
         // --- EVITER LES BORDURES
-        if (Player_pos_cas.x < 25)
+        if (Player_pos_cas.x < SCREEN_WIDTH/2)
         {
-            Player_pos_cas.x = 25;
+            Player_pos_cas.x = SCREEN_WIDTH/2;
         }
 
         if (Player_pos_cas.x > SCREEN_WIDTH-25)
         {
             Player_pos_cas.x = SCREEN_WIDTH-25;
         }
-        if (Player_pos_cas.y < 25)
+        if (Player_pos_cas.y < SCREEN_HEIGHT/3)
         {
-            Player_pos_cas.y = 25;
+            Player_pos_cas.y = SCREEN_HEIGHT/3;
         }
 
-        if (Player_pos_cas.y > SCREEN_WIDTH-25)
+        if (Player_pos_cas.y > SCREEN_HEIGHT-25)
         {
-            Player_pos_cas.y = SCREEN_WIDTH-25;
+            Player_pos_cas.y = SCREEN_HEIGHT-25;
         }
 
-        if (Player_pos_cas2.x < 25)
+        if (Player_pos_cas2.x < SCREEN_WIDTH/2)
         {
-            Player_pos_cas2.x = 25;
+            Player_pos_cas2.x = SCREEN_WIDTH/2;
         }
 
         if (Player_pos_cas2.x > SCREEN_WIDTH-25)
         {
             Player_pos_cas2.x = SCREEN_WIDTH-25;
         }
-        if (Player_pos_cas2.y < 25)
+        if (Player_pos_cas2.y < SCREEN_HEIGHT/3)
         {
-            Player_pos_cas2.y = 25;
+            Player_pos_cas2.y = SCREEN_HEIGHT/3;
         }
 
-        if (Player_pos_cas2.y > SCREEN_WIDTH-25)
+        if (Player_pos_cas2.y > SCREEN_HEIGHT-25)
         {
-            Player_pos_cas2.y = SCREEN_WIDTH-25;
+            Player_pos_cas2.y = SCREEN_HEIGHT-25;
         }
         
         
@@ -193,8 +193,9 @@ int main_casino ()
 
             DrawTexture(cursor,Player_pos_cas.x,Player_pos_cas.y,WHITE);
             DrawTexture(cursor,Player_pos_cas2.x,Player_pos_cas2.y,WHITE);
-
+            
             DrawCircleV(pos_bille, 10, WHITE);
+            DrawCircleV(pos_bille, 1.0f, BLUE);
 
         EndDrawing();
 
