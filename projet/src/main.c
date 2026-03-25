@@ -6,6 +6,6 @@
 
 int main() { 
     main_casino();
-    // shooter();
+    shooter();
     return 0;
 }
