@@ -3,6 +3,7 @@
 #include "./jeux/main_board.c"
 
 int main() { 
-    main_board();
+    // main_board();
+    main_casino();
     return 0;
 }
