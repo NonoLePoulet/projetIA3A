@@ -29,6 +29,7 @@ int main_casino ()
     int l = 0;
     int fin_score = 0;
     int fin_score2 = 0; 
+    int fin_score3 = 0;
     int win1 = 0;
     int win2 = 0; 
     int roulette_terminee = 0;
@@ -160,16 +161,26 @@ int main_casino ()
 
         // --- Ajout/Suppression de points ---
         if (choose == 0) {
-            if(IsKeyPressed(KEY_ENTER) && points_count < score) {
+            if(IsKeyPressed(KEY_ENTER) && score>0 && (CheckCollisionPointRec(Player_pos_cas, nombres)|| CheckCollisionPointRec(Player_pos_cas, zero) || CheckCollisionPointRec(Player_pos_cas, bizarre) || CheckCollisionPointRec(Player_pos_cas, dernier))) {
                 points_verts[points_count] = Player_pos_cas;
                 points_count++;
+                score--;
             }
-            if(IsKeyPressed(KEY_SPACE) && points_count2 < score2) {
+            if(IsKeyPressed(KEY_SPACE) && score2>0 && (CheckCollisionPointRec(Player_pos_cas2, nombres)|| CheckCollisionPointRec(Player_pos_cas2, zero) || CheckCollisionPointRec(Player_pos_cas2, bizarre) || CheckCollisionPointRec(Player_pos_cas2, dernier))) {
                 points_jaunes[points_count2] = Player_pos_cas2;
                 points_count2++;
+                score2--;
             }
-            if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0) points_count--;
-            if(IsKeyPressed(KEY_LEFT_CONTROL) && points_count2 != 0) points_count2--;
+            if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0)
+            {
+                points_count--;
+                score++;
+            }
+            if(IsKeyPressed(KEY_LEFT_CONTROL) && points_count2 != 0)
+            {
+                points_count2--;
+                score2++;
+            }
         }
 
         // --- Physique de la bille ---
@@ -184,6 +195,7 @@ int main_casino ()
             chrono = 0.0f;
             fin_score = -1;  
             fin_score2 = -1;
+            fin_score3 = -1;
         }
 
         if (chrono >= temps_attente && vitesse_rotation > 0.01f && choose != 0) {
@@ -415,7 +427,7 @@ int main_casino ()
         // ==========================================
         // ------FIN DE MANCHE ET VÉRIFICATIONS------
         // ==========================================
-        if(vitesse_rotation == 0.0f && fin_score2 != 0) {
+        if(vitesse_rotation == 0.0f && fin_score3 != 0) {
             manches_jouees++;
             // Condition 1 : Un joueur atteint 36
             if (score >= 36 || score2 >= 36) {
@@ -442,7 +454,7 @@ int main_casino ()
             timer_fin_manche += GetFrameTime();
             
             // On laisse les résultats affichés pendant 5 secondes
-            if (timer_fin_manche > 5.0f) {
+            if (timer_fin_manche > 10.0f) {
                 if (vainqueur != -1) {
                     break; // On sort de la boucle while, la partie est finie !
                 } else {
@@ -488,10 +500,25 @@ int main_casino ()
                     DrawTextureRec(pion, pion2, (Vector2){win_jaunes[i].x-12, win_jaunes[i].y-28}, WHITE);
                 }
             }
-            DrawText(TextFormat("%d/36", score - points_count), 1080, 20, 20, RED);
-            DrawText(TextFormat("%d/36", score2 - points_count2), 720, 20, 20, WHITE);
-            DrawText(TextFormat("Manche numéro : %d/3", manches_jouees+1), 47, 74, 37, WHITE);
+            DrawText(TextFormat("%d/36", score), 1080, 20, 20, RED);
+            DrawText(TextFormat("%d/36", score2), 720, 20, 20, WHITE);
 
+            if(vainqueur == -1)
+            {
+                DrawText(TextFormat("Manche numéro : %d/3", manches_jouees+1), 47, 74, 37, WHITE);
+            }
+            else if (vainqueur == 1)
+            {
+                DrawText(TextFormat("Vainqueur joueur rouge"), 47, 74, 37, WHITE);
+            }
+            else if (vainqueur == 2)
+            {
+                DrawText(TextFormat("Vainqueur joueur blanc"), 47, 74, 37, WHITE);
+            }
+            else if (vainqueur == 0)
+            {
+                DrawText(TextFormat("Wow une égalité"), 47, 74, 37, WHITE);
+            }
             DrawTexture(cursor, Player_pos_cas.x, Player_pos_cas.y, WHITE);
             DrawTexture(cursor, Player_pos_cas2.x, Player_pos_cas2.y, WHITE);
             
