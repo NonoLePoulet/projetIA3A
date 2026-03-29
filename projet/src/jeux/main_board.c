@@ -86,6 +86,10 @@ int main_board(int mode) {
     int listilesshooter[TOTAL_SQUARES];
     filllisttiles(listilesshooter, indexshooter, SHOOTER_TILES);
 
+    int p1points = 0 ;
+    int p2points = 0 ;
+    int dealt =0;
+
 
     Vector2 visualPos = GetBoardCoordinates(0, cellSize);
 
@@ -136,12 +140,27 @@ int main_board(int mode) {
             {
                 int tile      = pendingLaunch;
                 pendingLaunch = -1;
-                minigameresult = LaunchMiniGame(tile, listtilescasino, listilesshooter);
+                minigameresult = LaunchMiniGame(tile, listtilescasino, listilesshooter,mode);
                 // After the mini-game window is closed and the board window
                 // is re-created, the while loop continues normally.
                 exited = 1 ;
+                dealt =0 ;
                 continue;
             }
+        }
+
+        if (minigameresult==1 && dealt==0){
+            p1points++;
+            dealt = 1;
+        }
+        else if (minigameresult==2 && dealt ==0){
+            p2points++;
+            dealt =1;
+        }
+        else if (minigameresult ==0 && dealt == 0){
+            p1points++;
+            p2points++;
+            dealt =1;
         }
 
         // 3. DESSIN
@@ -193,6 +212,12 @@ int main_board(int mode) {
         DrawText("Shooter",  26, 10, 12, BLACK);
         DrawRectangle(8, 26,  14, 14, (Color){ 180, 220, 255, 255 });
         DrawText("Casino",   26, 28, 12, BLACK);
+
+        DrawRectangle(740, 5, 50, 40, Fade(LIGHTGRAY, 0.8f));
+        DrawText("p1:",  750, 10, 12, BLACK);
+        DrawText("p1:",  750, 28, 12, BLACK);
+        DrawText(TextFormat("%d",p1points),775,10,12,BLUE);
+        DrawText(TextFormat("%d",p2points),775,28,12,RED);
  
         EndDrawing();
     }
