@@ -21,7 +21,7 @@ typedef struct {
     int colonne;  // 0 = Zéro, 1 = 1ère col, 2 = 2ème col, 3 = 3ème col
 } CaseRoulette;
 
-int main_casino ()
+int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
 {
     int i;
     int j;
@@ -72,23 +72,33 @@ int main_casino ()
         {1}
     }; 
 
+
+    //Les différentes cases du tableaux
     Rectangle zero = {323*2.0f, 123*2.0f, (346-323)*2.0f, (230-123)*2.0f};
     Rectangle nombres = {347*2.0f, 123*2.0f, (565-347)*2.0f, (230-123)*2.0f};
     Rectangle bizarre = {347*2.0f, 230*2.0f, (565-347)*2.0f, (301-230)*2.0f};
     Rectangle dernier = {565*2.0f, 123*2.0f, (583-565)*2.0f, (230-123)*2.0f};
 
+    // Pour le j1
     Vector2 Player_pos_cas = {SCREEN_WIDTH/16 * 15, 650};
     Vector2 Player_speed_cas = {0,0};
     Vector2 points_verts[MAX_POINTS];
     Vector2 win_verts[MAX_POINTS];
     int points_count = 0;
 
+    //Pour le J2
     Vector2 Player_pos_cas2 = {SCREEN_WIDTH/8 * 4, 650};
     Vector2 Player_speed_cas2 = {0,0};
     Vector2 points_jaunes[MAX_POINTS];
     Vector2 win_jaunes[MAX_POINTS];
     int points_count2 = 0;
 
+    //Pour l'IA
+    Vector2 ia_target = {0, 0};
+    int ia_has_target = 0;
+    int ia_timer_attente = 0;
+
+    //Pour la bille
     float angle_bille = 0.0f;
     float rayon_orbite = 180.0f; 
     Vector2 centre_orbite = { 294, 414 }; 
@@ -131,14 +141,17 @@ int main_casino ()
             Player_pos_cas.x += Player_speed_cas.x;
             Player_pos_cas.y += Player_speed_cas.y;
 
-            if(IsKeyDown(KEY_A)) Player_speed_cas2.x = -5;
-            if(IsKeyDown(KEY_D)) Player_speed_cas2.x = 5;
-            if(IsKeyDown(KEY_W)) Player_speed_cas2.y = -5;
-            if(IsKeyDown(KEY_S)) Player_speed_cas2.y = 5;
-            if(!IsKeyDown(KEY_A) && !IsKeyDown(KEY_D)) Player_speed_cas2.x = 0.0f;
-            if(!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S)) Player_speed_cas2.y = 0.0f;
-            Player_pos_cas2.x += Player_speed_cas2.x;
-            Player_pos_cas2.y += Player_speed_cas2.y;
+            if(mode_ia == 0)
+            {
+                if(IsKeyDown(KEY_A)) Player_speed_cas2.x = -5;
+                if(IsKeyDown(KEY_D)) Player_speed_cas2.x = 5;
+                if(IsKeyDown(KEY_W)) Player_speed_cas2.y = -5;
+                if(IsKeyDown(KEY_S)) Player_speed_cas2.y = 5;
+                if(!IsKeyDown(KEY_A) && !IsKeyDown(KEY_D)) Player_speed_cas2.x = 0.0f;
+                if(!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S)) Player_speed_cas2.y = 0.0f;
+                Player_pos_cas2.x += Player_speed_cas2.x;
+                Player_pos_cas2.y += Player_speed_cas2.y;
+            }
         }
 
         // --- Limites d'écran ---
@@ -171,15 +184,91 @@ int main_casino ()
                 points_count2++;
                 score2--;
             }
-            if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0)
+
+            if (mode_ia == 0)
             {
-                points_count--;
-                score++;
+                if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0)
+                {
+                    points_count--;
+                    score++;
+                }
+                if(IsKeyPressed(KEY_LEFT_CONTROL) && points_count2 != 0)
+                {
+                    points_count2--;
+                    score2++;
+                }
             }
-            if(IsKeyPressed(KEY_LEFT_CONTROL) && points_count2 != 0)
-            {
-                points_count2--;
-                score2++;
+        }
+
+        // ----Pour faire jouer l'IA-----
+        if (mode_ia == 1) {
+            // --- IA AVEC COMPORTEMENT STRATÉGIQUE---
+            
+            int max_paris_ia = 3; 
+            int type_pari = 1;    // 0 = Risqué, 1 = Moyen, 2 = Prudent
+
+            // 1. ANALYSE DE LA SITUATION
+            if (manches_jouees == 2) { 
+                if (score2 <= score) { max_paris_ia = score2; type_pari = 0; } 
+                else { max_paris_ia = 1; type_pari = 2; }
+            } else { 
+                if (score > score2 + 10) { max_paris_ia = 4; type_pari = 0; } 
+                else if (score2 > score + 10) { max_paris_ia = 2; type_pari = 2; } 
+                else if (score2 <= 3) { max_paris_ia = score2; type_pari = 0; } 
+                else { max_paris_ia = 3; type_pari = 1; }
+            }
+
+            // Gestion du délai de réflexion de l'IA
+            if (ia_timer_attente > 0) ia_timer_attente--;
+
+            // 2. CHOIX DE LA CIBLE (Si l'IA est prête et n'a pas encore de cible)
+            if (ia_timer_attente == 0 && ia_has_target == 0 && points_count2 < max_paris_ia) {
+                if (rand() % 100 < 15 && type_pari != 0) type_pari = 0; // Coup de folie
+
+                if (type_pari == 0) {
+                    ia_target.x = nombres.x + (rand() % (int)nombres.width);
+                    ia_target.y = nombres.y + (rand() % (int)nombres.height);
+                } 
+                else if (type_pari == 1) {
+                    if (rand() % 2 == 0) {
+                        ia_target.x = dernier.x + (rand() % (int)dernier.width);
+                        ia_target.y = dernier.y + (rand() % (int)dernier.height);
+                    } else {
+                        ia_target.x = nombres.x + (rand() % (int)nombres.width);
+                        ia_target.y = nombres.y + (rand() % (int)nombres.height);
+                    }
+                } 
+                else if (type_pari == 2) {
+                    ia_target.x = bizarre.x + (rand() % (int)bizarre.width);
+                    ia_target.y = bizarre.y + (bizarre.height / 2.0f) + (rand() % (int)(bizarre.height / 2.0f)); 
+                }
+                
+                ia_has_target = 1; // L'IA a verrouillé sa cible visuelle !
+            }
+
+            // 3. DÉPLACEMENT VISUEL FLUIDE VERS LA CIBLE
+            if (ia_has_target == 1) {
+                // Calcul de la distance entre le curseur IA et sa cible
+                float dx = ia_target.x - Player_pos_cas2.x;
+                float dy = ia_target.y - Player_pos_cas2.y;
+                float distance = sqrtf(dx*dx + dy*dy);
+                
+                float vitesse_ia = 7.0f; // Vitesse de déplacement (7 pixels par frame)
+
+                if (distance < vitesse_ia) {
+                    // Cible atteinte ! On valide la position exacte et on pose le jeton
+                    Player_pos_cas2 = ia_target;
+                    points_jaunes[points_count2] = ia_target;
+                    points_count2++;
+                    score2--;
+                    
+                    ia_has_target = 0;      // L'IA n'a plus de cible
+                    ia_timer_attente = 20;  // Pause de réflexion avant le prochain jeton
+                } else {
+                    // On avance le curseur dans la direction de la cible
+                    Player_pos_cas2.x += (dx / distance) * vitesse_ia;
+                    Player_pos_cas2.y += (dy / distance) * vitesse_ia;
+                }
             }
         }
 
@@ -447,6 +536,7 @@ int main_casino ()
                 else if (score2 > score) vainqueur = 2;
                 else vainqueur = 0;
             }
+            fin_score3 = 0;
         }
 
         // --- Lancement nouvelle partie ---
@@ -461,8 +551,11 @@ int main_casino ()
                     // RESET POUR LA MANCHE SUIVANTE
                     points_count = 0;
                     points_count2 = 0;
+                    ia_has_target = 0;
+                    ia_timer_attente = 0;
                     k = 0;
                     l = 0;
+                    fin_score3 = -1;
                     choose = 0;
                     timer = 0;
                     chrono = 0.0f;
@@ -527,8 +620,8 @@ int main_casino ()
 
             if (roulette_terminee == 1) {
                 DrawText(TextFormat("LE NUMERO GAGNANT EST : %d", numero_gagnant), 600, 60, 40, GREEN);
-                DrawText(TextFormat("+%d", win1), SCREEN_WIDTH - 630, 600, 30, WHITE);
-                DrawText(TextFormat("+%d", win2), SCREEN_WIDTH -100, 600, 30, RED);
+                DrawText(TextFormat("+%d", win2), SCREEN_WIDTH - 630, 600, 30, WHITE);
+                DrawText(TextFormat("+%d", win1), SCREEN_WIDTH -100, 600, 30, RED);
             }
             if (choose == 0) {
                 DrawText(TextFormat("Faites vos jeux !! : %d", 15-(timer/60)), 720, 60, 40, GREEN);
