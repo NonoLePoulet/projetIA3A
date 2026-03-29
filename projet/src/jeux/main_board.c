@@ -53,7 +53,7 @@ static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_
     if (shooter_tiles[tile]==1) {
         result = shooter();
     } else if (casino_tiles[tile]==1) {
-        result = main_casino();
+        result = main_casino(0);
     }
  
     // Restore the board window after the mini-game closes
