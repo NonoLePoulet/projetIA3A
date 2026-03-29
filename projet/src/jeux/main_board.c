@@ -43,7 +43,7 @@ static const char* TileLabel(int index ,int casino_tiles[TOTAL_SQUARES],int shoo
     return NULL;
 }
 
-static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_tiles[TOTAL_SQUARES])
+static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_tiles[TOTAL_SQUARES],int mode)
 {
     // Give the player a moment to read which tile they landed on,
     // then close the board window before opening the mini-game window.
@@ -53,7 +53,7 @@ static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_
     if (shooter_tiles[tile]==1) {
         result = shooter();
     } else if (casino_tiles[tile]==1) {
-        result = main_casino(0);
+        result = main_casino(mode);
     }
  
     // Restore the board window after the mini-game closes
@@ -63,7 +63,7 @@ static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_
     return result ;
 }
 
-int main_board() {
+int main_board(int mode) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
     SetTargetFPS(60);
 

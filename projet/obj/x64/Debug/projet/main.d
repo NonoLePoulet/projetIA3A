@@ -22,8 +22,8 @@ obj/x64/Debug/projet/main.o: src/main.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h src/./jeux/main_board.c \
- src/./jeux/main_shooter.c /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h src/./jeux/mode_select.c \
+ src/./jeux/main_board.c src/./jeux/main_shooter.c /usr/include/stdlib.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
@@ -60,6 +60,7 @@ build/external/raylib-master/src/raymath.h:
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
+src/./jeux/mode_select.c:
 src/./jeux/main_board.c:
 src/./jeux/main_shooter.c:
 /usr/include/stdlib.h:
