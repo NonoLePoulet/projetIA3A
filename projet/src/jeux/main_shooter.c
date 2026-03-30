@@ -142,7 +142,7 @@ int shooter(int mode) {
 //--------------------------------------AI Moveset-------------------------------------------------
 
         if(mode == 1){
-            Trigger = (Vector2){player_list[1].pos.x,player_list[1].pos.y-70};
+            Trigger = (Vector2){player_list[1].pos.x,player_list[1].pos.y-45};
             if(shouldDodge == 0 && player_list[1].is_alive == 1){
                 if(abs(player_list[1].pos.x-TargetPoint.x)<16 && abs(player_list[1].pos.y-TargetPoint.y)<16){
                     TargetPoint = (Vector2){rand()%800,rand()%350+450};
@@ -205,7 +205,7 @@ int shooter(int mode) {
                     player_list[i].cur_frame = 0;
 
                 }
-                if(abs(Trigger.x-bullet_list[j].pos.x)<70 && abs(Trigger.y-bullet_list[j].pos.y)<30){
+                if(abs(Trigger.x-bullet_list[j].pos.x)<70 && abs(Trigger.y-bullet_list[j].pos.y)<50){
                     shouldDodge = 1;
                     bulletToDodge = bullet_list[j];
                     TargetPoint = (Vector2){rand()%800,rand()%350+450};
