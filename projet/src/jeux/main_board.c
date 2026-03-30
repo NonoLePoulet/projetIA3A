@@ -12,9 +12,9 @@
 #define TOTAL_SQUARES 40
 #define ANIM_SPEED 10.0f  // Vitesse de glissement (Lerp)
 
-#define SHOOTER_TILES 13   // landing here launches the shooter mini-game
+#define SHOOTER_TILES 10   // landing here launches the shooter mini-game
 #define casinotiles 13
-#define pw4tiles 13
+#define pw4tiles 12
 
 
 Vector2 GetBoardCoordinates(int index, int cellSize) {
@@ -86,13 +86,13 @@ int main_board(int mode) {
     bool justLanded    = false;
     int  pendingLaunch = -1;
     int  launchCountdown = 0; 
-    int  minigameresult ;
+    int  minigameresult = -1;
     int  exited= 0 ;
     int indexcasino[casinotiles] = {0,1,2,3,4,5,6,7,8,9,10,11,12};
     int listtilescasino[TOTAL_SQUARES];
     filllisttiles(listtilescasino, indexcasino, casinotiles);
 
-    int indexshooter[SHOOTER_TILES] = {25,26,27,28,29,30,31,32,33,34,35,36,37};
+    int indexshooter[SHOOTER_TILES] = {25,26,27,28,29,30,31,32,33,34};
     int listilesshooter[TOTAL_SQUARES];
     filllisttiles(listilesshooter, indexshooter, SHOOTER_TILES);
 
@@ -203,14 +203,10 @@ int main_board(int mode) {
         // Announce incoming mini-game
         if (pendingLaunch >= 0)
         {
-            const char* name;
-                if (pendingLaunch == listilesshooter[playerLogicPos]) {
-                    name = "SHOOTER";
-                } else if (pendingLaunch == listtilescasino[playerLogicPos]){
-                    name = "CASINO";
-                } else if (pendingLaunch == listilespwr[playerLogicPos]){
-                    name = "PUISSANCE 4";
-                }
+          const char* name = "???"; // always give a default
+        if      (listilesshooter[pendingLaunch] == 1) name = "SHOOTER";
+        else if (listtilescasino[pendingLaunch] == 1) name = "CASINO";
+        else if (listilespwr[pendingLaunch]     == 1) name = "PUISSANCE 4";
             DrawRectangle(150, 450, 500, 60, Fade(BLACK, 0.6f));
             DrawText(TextFormat("Mini-jeu : %s - lancement dans %ds...",
                      name, launchCountdown / 60 + 1),
