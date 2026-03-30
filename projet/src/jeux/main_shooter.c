@@ -226,8 +226,10 @@ int shooter(int mode) {
             winner = 0;
             endTimer = time;
         }
-        if(time-endTimer > 180.0f && endTimer != 0.0f) return winner;
-
+        if(time-endTimer > 180.0f && endTimer != 0.0f){
+            CloseWindow();
+            return (winner+1);
+        }
         ClearBackground(BLACK);
         BeginDrawing();
 
@@ -238,7 +240,8 @@ int shooter(int mode) {
         }
         if(player_list[1].is_alive != 0){
             DrawTextureRec(SpaceShip, player_list[1].frameRec,(Vector2){player_list[1].pos.x-16,player_list[1].pos.y-16}, WHITE);
-            DrawText("IA",player_list[1].pos.x-7,player_list[1].pos.y+20, 7, BLUE);
+            if(mode == 1) DrawText("IA",player_list[1].pos.x-7,player_list[1].pos.y+20, 7, BLUE);
+            else DrawText("Player2",player_list[1].pos.x-18,player_list[1].pos.y+20, 7, BLUE);
         }
         if(endTimer > 0.0f){
             DrawText(TextFormat("PLAYER %d WINS",winner + 1),200,400,50,WHITE);
@@ -254,6 +257,7 @@ int shooter(int mode) {
     }
     UnloadTexture(SpaceShip);
     UnloadTexture(bullet);
+    UnloadTexture(enemy);
     CloseWindow();
 
     return 0 ;
