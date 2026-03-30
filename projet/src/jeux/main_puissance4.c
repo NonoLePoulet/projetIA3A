@@ -252,7 +252,7 @@ int main_puissance4(int mode_ia)
     while (!WindowShouldClose()) {
 
         // --- GESTION DU JOUEUR 1 ---
-        if (tour_joueur == JOUEUR_1 && vainqueur == 0) {
+        if (tour_joueur == JOUEUR_1 && vainqueur == -1) {
             if (IsKeyPressed(KEY_LEFT) && colonne_choisie1 > 0) colonne_choisie1--;
             if (IsKeyPressed(KEY_RIGHT) && colonne_choisie1 < COLONNES - 1) colonne_choisie1++;
 
@@ -270,7 +270,7 @@ int main_puissance4(int mode_ia)
         }
         
         // --- GESTION DU JOUEUR 2 (HUMAIN OU IA) ---
-        else if (tour_joueur == JOUEUR_2 && vainqueur == 0) {
+        else if (tour_joueur == JOUEUR_2 && vainqueur == -1) {
             if (mode_ia == 0) {
                 if (IsKeyPressed(KEY_A) && colonne_choisie2 > 0) colonne_choisie2--;
                 if (IsKeyPressed(KEY_D) && colonne_choisie2 < COLONNES - 1) colonne_choisie2++;
@@ -357,7 +357,7 @@ int main_puissance4(int mode_ia)
 
         //----FIN DE PARTIE -----
         chrono += GetFrameTime();
-        if(vainqueur!=0)
+        if(vainqueur!=-1)
         {
             timer_fin+= GetFrameTime();
             if(timer_fin>7.0f)
@@ -408,7 +408,7 @@ int main_puissance4(int mode_ia)
         );
 
         // 4. INTERFACE : Textes d'informations et curseurs
-        if (vainqueur == 0) {
+        if (vainqueur == -1) {
             DrawText("REGLES : ALIGNER 4 PIONS POUR GAGNER !!", 300, 30, 30, WHITE);
             if (tour_joueur == JOUEUR_1) {
                 DrawText("TOUR DU JOUEUR 1 (Panda) - Touches: <- -> et ENTREE", 300, 90, 20, SKYBLUE);

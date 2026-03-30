@@ -187,16 +187,16 @@ int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
 
             if (mode_ia == 0)
             {
-                if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0)
-                {
-                    points_count--;
-                    score++;
-                }
                 if(IsKeyPressed(KEY_LEFT_CONTROL) && points_count2 != 0)
                 {
                     points_count2--;
                     score2++;
                 }
+            }
+            if(IsKeyPressed(KEY_BACKSPACE) && points_count != 0)
+            {
+                points_count--;
+                score++;
             }
         }
 

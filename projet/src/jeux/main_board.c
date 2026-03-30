@@ -193,7 +193,7 @@ int main_board(int mode) {
             DrawText(TextFormat("%d", i), p.x - cellSize/2 + 5, p.y - cellSize/2 + 5, 10, GRAY);
         }
 
-        DrawCircleV(visualPos, 15, GREEN);
+        DrawCircleV(visualPos, 15, YELLOW);
 
         DrawText("ESPACE pour lancer les des", 280, 350, 20, DARKGRAY);
         DrawText(TextFormat("Dernier lancer: %d", lastRoll), 320, 380, 20, MAROON);
@@ -215,13 +215,13 @@ int main_board(int mode) {
 
         if (exited ==1){
             if (minigameresult == 1){
-                DrawText("LE JOUEUR 1 A GAGNE", 160, 465, 20, GREEN);
+                DrawText("LE JOUEUR 1 A GAGNE", 300, 465, 20, GREEN);
             }
             else if (minigameresult == 2){
-                DrawText("LE JOUEUR 2 A GAGNE", 160, 465, 20, GREEN);
+                DrawText("LE JOUEUR 2 A GAGNE", 300, 465, 20, GREEN);
             }
             else if (minigameresult == 0){
-                DrawText("egalitéwtf?", 160, 465, 20, GREEN);
+                DrawText("egalitéwtf?", 300, 465, 20, GREEN);
             }
         }
 
