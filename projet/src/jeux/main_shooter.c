@@ -41,7 +41,7 @@ void fire_bullet(Bullet* list, int index, int time){
 }
 
 
-int shooter() {
+int shooter(int mode) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
     Bullet *bullet_list = (Bullet *)RL_CALLOC(BULLET_MAX, sizeof(Bullet));
     Player *player_list = (Player *)RL_CALLOC(NB_PLAYER, sizeof(Player));
@@ -127,49 +127,65 @@ int shooter() {
         if(!IsKeyDown(KEY_LEFT)&&!IsKeyDown(KEY_RIGHT) || player_list[0].is_alive != 1) player_list[0].speed.x = (float) 0;
         if(!IsKeyDown(KEY_UP)&&!IsKeyDown(KEY_DOWN) || player_list[0].is_alive != 1) player_list[0].speed.y = (float) 0;
 //-------------------------------------------------------------------------------------------------
+//------------------------------------Input player 2-----------------------------------------------
+        if(mode == 0){
+            if(player_list[1].is_alive == 1){
+                if(IsKeyDown(KEY_A)) player_list[1].speed.x = -3;
+                if(IsKeyDown(KEY_D)) player_list[1].speed.x = 3;    
+                if(IsKeyDown(KEY_W)) player_list[1].speed.y = -3;
+                if(IsKeyDown(KEY_S)) player_list[1].speed.y = 3;
+            }  
+            if(!IsKeyDown(KEY_A)&&!IsKeyDown(KEY_D) || player_list[1].is_alive != 1) player_list[1].speed.x = (float) 0;
+            if(!IsKeyDown(KEY_W)&&!IsKeyDown(KEY_S) || player_list[1].is_alive != 1) player_list[1].speed.y = (float) 0;
+        }
+//-------------------------------------------------------------------------------------------------
 //--------------------------------------AI Moveset-------------------------------------------------
 
-        Trigger = (Vector2){player_list[1].pos.x,player_list[1].pos.y-70};
-        if(shouldDodge == 0 && player_list[1].is_alive == 1){
-            if(abs(player_list[1].pos.x-TargetPoint.x)<16 && abs(player_list[1].pos.y-TargetPoint.y)<16){
-                TargetPoint = (Vector2){rand()%800,rand()%350+450};
+        if(mode == 1){
+            Trigger = (Vector2){player_list[1].pos.x,player_list[1].pos.y-70};
+            if(shouldDodge == 0 && player_list[1].is_alive == 1){
+                if(abs(player_list[1].pos.x-TargetPoint.x)<16 && abs(player_list[1].pos.y-TargetPoint.y)<16){
+                    TargetPoint = (Vector2){rand()%800,rand()%350+450};
+                }
+                if(TargetPoint.x-player_list[1].pos.x > 0){
+                    player_list[1].speed.x = 2;
+                }
+                else if(TargetPoint.x-player_list[1].pos.x < 0){
+                    player_list[1].speed.x = -2;
+                }
+                if(TargetPoint.y-player_list[1].pos.y > 0){
+                    player_list[1].speed.y = 2;
+                }
+                else if(TargetPoint.y-player_list[1].pos.y < 0){
+                    player_list[1].speed.y = -2;
+                }
+                if(abs(player_list[1].pos.x-TargetPoint.x)<10){
+                    player_list[1].pos.x = TargetPoint.x;
+                    player_list[1].speed.x = 0;
+                }
+                if(abs(player_list[1].pos.y-TargetPoint.y)<10){
+                    player_list[1].pos.y = TargetPoint.y;
+                    player_list[1].speed.y = 0;
+                }
             }
-            if(TargetPoint.x-player_list[1].pos.x > 0){
-                player_list[1].speed.x = 2;
-            }
-            else if(TargetPoint.x-player_list[1].pos.x < 0){
-                player_list[1].speed.x = -2;
-            }
-            if(TargetPoint.y-player_list[1].pos.y > 0){
-                player_list[1].speed.y = 2;
-            }
-            else if(TargetPoint.y-player_list[1].pos.y < 0){
-                player_list[1].speed.y = -2;
-            }
-            if(abs(player_list[1].pos.x-TargetPoint.x)<10){
-                player_list[1].pos.x = TargetPoint.x;
-                player_list[1].speed.x = 0;
-            }
-            if(abs(player_list[1].pos.y-TargetPoint.y)<10){
-                player_list[1].pos.y = TargetPoint.y;
-                player_list[1].speed.y = 0;
-            }
-        }
-        else if(shouldDodge == 1){
-            if(abs(bulletToDodge.direction.x)<1){
-                player_list[1].speed.x = 3;
+            else if(shouldDodge == 1){
+                if(abs(bulletToDodge.direction.x)<1){
+                    player_list[1].speed.x = 3;
+                }
+                else{
+                    player_list[1].speed.x = -(bulletToDodge.direction.x/abs(bulletToDodge.direction.x))*3;
+                    player_list[1].speed.y = 3;
+                }
+                if(!(abs(Trigger.x-bulletToDodge.pos.x)<70 && abs(Trigger.y-bulletToDodge.pos.y)<30)){
+                    shouldDodge = 0;
+                }
             }
             else{
-                player_list[1].speed.x = -(bulletToDodge.direction.x/abs(bulletToDodge.direction.x))*3;
-                player_list[1].speed.y = 3;
-            }
-            if(!(abs(Trigger.x-bulletToDodge.pos.x)<70 && abs(Trigger.y-bulletToDodge.pos.y)<30)){
-                shouldDodge = 0;
+                player_list[1].speed = Vector2Zero();
             }
         }
-        else{
-            player_list[1].speed = Vector2Zero();
-        }
+
+//-------------------------------------------------------------------------------------------------
 
         for(int i=0;i<NB_PLAYER;++i){
             Vector2Normalize(player_list[i].speed);

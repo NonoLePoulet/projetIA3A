@@ -58,7 +58,7 @@ static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_
     int result ;
  
     if (shooter_tiles[tile]==1) {
-        result = shooter();
+        result = shooter(mode);
     } else if (casino_tiles[tile]==1) {
         result = main_casino(mode);
     }

@@ -32,7 +32,15 @@ obj/x64/Debug/projet/main.o: src/main.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
- /usr/include/x86_64-linux-gnu/bits/endianness.h src/./jeux/main_casino.c
+ /usr/include/x86_64-linux-gnu/bits/endianness.h src/./jeux/main_casino.c \
+ src/./jeux/main_puissance4.c /usr/include/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio_lim.h
 /usr/include/stdc-predef.h:
 build/external/raylib-master/src/raylib.h:
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
@@ -75,3 +83,12 @@ src/./jeux/main_shooter.c:
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 src/./jeux/main_casino.c:
+src/./jeux/main_puissance4.c:
+/usr/include/stdio.h:
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
+/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
+/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
