@@ -179,7 +179,7 @@ int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
                 points_count++;
                 score--;
             }
-            if(IsKeyPressed(KEY_SPACE) && score2>0 && (CheckCollisionPointRec(Player_pos_cas2, nombres)|| CheckCollisionPointRec(Player_pos_cas2, zero) || CheckCollisionPointRec(Player_pos_cas2, bizarre) || CheckCollisionPointRec(Player_pos_cas2, dernier))) {
+            if(IsKeyPressed(KEY_SPACE) && score2>0 && mode_ia == 0 && (CheckCollisionPointRec(Player_pos_cas2, nombres)|| CheckCollisionPointRec(Player_pos_cas2, zero) || CheckCollisionPointRec(Player_pos_cas2, bizarre) || CheckCollisionPointRec(Player_pos_cas2, dernier))) {
                 points_jaunes[points_count2] = Player_pos_cas2;
                 points_count2++;
                 score2--;

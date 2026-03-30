@@ -173,7 +173,12 @@ int shooter(int mode) {
                     player_list[1].speed.x = 3;
                 }
                 else{
-                    player_list[1].speed.x = -(bulletToDodge.direction.x/abs(bulletToDodge.direction.x))*3;
+                    if((bulletToDodge.direction.x > 0 && player_list[1].pos.x-bulletToDodge.pos.x > 0)||(bulletToDodge.direction.x < 0 && player_list[1].pos.x-bulletToDodge.pos.x < 0)){
+                        player_list[1].speed.x = (bulletToDodge.direction.x/abs(bulletToDodge.direction.x))*3;
+                    }
+                    else{
+                        player_list[1].speed.x = -(bulletToDodge.direction.x/abs(bulletToDodge.direction.x))*3;
+                    }
                     player_list[1].speed.y = 3;
                 }
                 if(!(abs(Trigger.x-bulletToDodge.pos.x)<70 && abs(Trigger.y-bulletToDodge.pos.y)<30)){
@@ -260,6 +265,6 @@ int shooter(int mode) {
     UnloadTexture(enemy);
     CloseWindow();
 
-    return 0 ;
+    return -1 ;
 
 }
