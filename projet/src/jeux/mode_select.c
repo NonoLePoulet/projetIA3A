@@ -28,8 +28,8 @@ void mode_select(){
         BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawText("Choisissez votre mode de jeu :" , 150 ,200 , 35, BLACK);
-        DrawText("PVIA", 200, 400, 30, RED);
-        DrawText("PVP",600,400,30,BLUE);
+        DrawText("PVP", 200, 400, 30, RED);
+        DrawText("PVIA",600,400,30,BLUE);
         if(mode == 0){
             DrawCircle(180,410,15,GREEN);
         }
