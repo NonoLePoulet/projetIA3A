@@ -182,7 +182,7 @@ int main_puissance4(int mode_ia)
     int grille[LIGNES][COLONNES] = {0};
     int colonne_choisie1 = 3;   
     int colonne_choisie2 = 3;   
-    int vainqueur = 0;
+    int vainqueur = -1;
     int tour_joueur = rand() %2 +1; //Pour commencer aléatoirement
 
     //Mémoire pour le mouvement fluide de l'IA
