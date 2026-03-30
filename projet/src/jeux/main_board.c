@@ -260,7 +260,7 @@ int main_board(int mode) {
                     DrawText("P2 a gagné !", 200, 400, 40, BLACK);
                 }
                 if (p2points>4 && mode == 1){
-                    DrawText("L'IA a gagné nullos" , 200,400,40,BLACK);
+                    DrawText("L'IA a gagné " , 200,400,40,BLACK);
                 }
                 DrawText("Appuie sur Entrée pour quitter" , 200,600,30,RED);
                 EndDrawing();

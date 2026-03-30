@@ -57,7 +57,7 @@ void printBoard( Item *node )
 	printf("\n");
 }
 
-
+//
 // initialize node's state from a given board
 void initBoard(Item *node, char *board) {
 	assert( node );
