@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH_SHOOTER 800
+#define SCREEN_HEIGHT_SHOOTER 800
 #define BULLET_MAX 50000
 #define NB_PLAYER 2
 
@@ -42,7 +42,7 @@ void fire_bullet(Bullet* list, int index, int time){
 
 
 int shooter(int mode) {
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
+    InitWindow(SCREEN_WIDTH_SHOOTER, SCREEN_HEIGHT_SHOOTER, "Shooter");
     Bullet *bullet_list = (Bullet *)RL_CALLOC(BULLET_MAX, sizeof(Bullet));
     Player *player_list = (Player *)RL_CALLOC(NB_PLAYER, sizeof(Player));
     player_list[0].pos=(Vector2){300,700};
@@ -194,9 +194,9 @@ int shooter(int mode) {
             player_list[i].pos.y += player_list[i].speed.y;
 
             if(player_list[i].pos.x < 0) player_list[i].pos.x = 0;
-            if(player_list[i].pos.x > SCREEN_WIDTH) player_list[i].pos.x = SCREEN_WIDTH;
+            if(player_list[i].pos.x > SCREEN_WIDTH_SHOOTER) player_list[i].pos.x = SCREEN_WIDTH_SHOOTER;
             if(player_list[i].pos.y < 250) player_list[i].pos.y = 250;
-            if(player_list[i].pos.y > SCREEN_HEIGHT) player_list[i].pos.y = SCREEN_HEIGHT;
+            if(player_list[i].pos.y > SCREEN_HEIGHT_SHOOTER) player_list[i].pos.y = SCREEN_HEIGHT_SHOOTER;
             for(int j=0;j<nb_bullet;++j){
                 if (abs(player_list[i].pos.x-bullet_list[j].pos.x)<16 && abs(player_list[i].pos.y-bullet_list[j].pos.y)<16){
                     bullet_list[j].display = 0;

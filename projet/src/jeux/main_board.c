@@ -12,7 +12,7 @@
 #define TOTAL_SQUARES 40
 #define ANIM_SPEED 10.0f  // Vitesse de glissement (Lerp)
 
-#define SHOOTER_TILES   3   // landing here launches the shooter mini-game
+#define SHOOTER_TILES 13   // landing here launches the shooter mini-game
 #define casinotiles 13
 #define pw4tiles 13
 
@@ -92,7 +92,7 @@ int main_board(int mode) {
     int listtilescasino[TOTAL_SQUARES];
     filllisttiles(listtilescasino, indexcasino, casinotiles);
 
-    int indexshooter[SHOOTER_TILES] = {24,33,41};
+    int indexshooter[SHOOTER_TILES] = {25,26,27,28,29,30,31,32,33,34,35,36,37};
     int listilesshooter[TOTAL_SQUARES];
     filllisttiles(listilesshooter, indexshooter, SHOOTER_TILES);
 
