@@ -3,6 +3,8 @@
 
 #include "main_shooter.c"
 #include "main_casino.c"
+#include "main_puissance4.c"
+
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
@@ -12,6 +14,9 @@
 
 #define SHOOTER_TILES   3   // landing here launches the shooter mini-game
 #define casinotiles 13
+#define pw4tiles 13
+
+
 Vector2 GetBoardCoordinates(int index, int cellSize) {
     int side = index / 10;
     int offset = index % 10;
@@ -26,7 +31,8 @@ Vector2 GetBoardCoordinates(int index, int cellSize) {
 }
 
 static int * filllisttiles(int listtiles[TOTAL_SQUARES] , int listindex[], int count){
-    for (int i =0 ; i<=TOTAL_SQUARES;i++){
+    for (int i =0 ; i<TOTAL_SQUARES;i++){
+        listtiles[i] = 0;
         for (int j=0 ; j< count; j++){
             if (listindex[j] == i){
                 listtiles[i] =1;
@@ -36,14 +42,15 @@ static int * filllisttiles(int listtiles[TOTAL_SQUARES] , int listindex[], int c
     return listtiles;
 }
 
-static const char* TileLabel(int index ,int casino_tiles[TOTAL_SQUARES],int shooter_tiles[TOTAL_SQUARES])
+static const char* TileLabel(int index ,int casino_tiles[TOTAL_SQUARES],int shooter_tiles[TOTAL_SQUARES], int power_tiles[TOTAL_SQUARES])
 {
     if (shooter_tiles[index]==1)  return "SHOOT";
     if (casino_tiles[index] == 1) return "CASINO";
+    if (power_tiles[index] ==1) return "POWER";
     return NULL;
 }
 
-static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_tiles[TOTAL_SQUARES],int mode)
+static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_tiles[TOTAL_SQUARES],int power_tiles[TOTAL_SQUARES], int mode)
 {
     // Give the player a moment to read which tile they landed on,
     // then close the board window before opening the mini-game window.
@@ -54,6 +61,9 @@ static int LaunchMiniGame(int tile,int casino_tiles[TOTAL_SQUARES], int shooter_
         result = shooter();
     } else if (casino_tiles[tile]==1) {
         result = main_casino(mode);
+    }
+    else if (power_tiles[tile]==1){
+        result = main_puissance4(mode);
     }
  
     // Restore the board window after the mini-game closes
@@ -85,6 +95,10 @@ int main_board(int mode) {
     int indexshooter[SHOOTER_TILES] = {24,33,41};
     int listilesshooter[TOTAL_SQUARES];
     filllisttiles(listilesshooter, indexshooter, SHOOTER_TILES);
+
+    int indexpwr[pw4tiles] = {13,14,15,16,17,18,19,20,21,22,23,24};
+    int listilespwr[TOTAL_SQUARES];
+    filllisttiles(listilespwr, indexpwr, pw4tiles);
 
     int p1points = 0 ;
     int p2points = 0 ;
@@ -126,7 +140,7 @@ int main_board(int mode) {
         {
             justLanded = false;
  
-            if (listilesshooter[playerLogicPos]==1 || listtilescasino[playerLogicPos] ==1)
+            if (listilesshooter[playerLogicPos]==1 || listtilescasino[playerLogicPos] ==1 || listilespwr[playerLogicPos]==1)
             {
                 // Small countdown so the player sees the "you landed here" text
                 pendingLaunch    = playerLogicPos;
@@ -140,7 +154,7 @@ int main_board(int mode) {
             {
                 int tile      = pendingLaunch;
                 pendingLaunch = -1;
-                minigameresult = LaunchMiniGame(tile, listtilescasino, listilesshooter,mode);
+                minigameresult = LaunchMiniGame(tile, listtilescasino, listilesshooter,listilespwr,mode);
                 // After the mini-game window is closed and the board window
                 // is re-created, the while loop continues normally.
                 exited = 1 ;
@@ -171,6 +185,7 @@ int main_board(int mode) {
             Color tint = RAYWHITE;
             if (listilesshooter[i]==1)                         tint = (Color){ 255, 180, 180, 255 }; // red-ish
             else if (listtilescasino[i]==1) tint = (Color){ 180, 220, 255, 255 }; // blue-ish
+            else if (listilespwr[i]==1) tint = (Color){128 ,239, 128  ,255};//god-ish
             Vector2 p = GetBoardCoordinates(i, cellSize);
             DrawRectangle(p.x - cellSize/2, p.y - cellSize/2, cellSize, cellSize, tint);
             DrawRectangleLines(p.x - cellSize/2, p.y - cellSize/2, cellSize, cellSize, BLACK);
@@ -187,7 +202,14 @@ int main_board(int mode) {
         // Announce incoming mini-game
         if (pendingLaunch >= 0)
         {
-            const char* name = (pendingLaunch == listilesshooter[playerLogicPos]) ? "SHOOTER" : "CASINO";
+            const char* name;
+                if (pendingLaunch == listilesshooter[playerLogicPos]) {
+                    name = "SHOOTER";
+                } else if (pendingLaunch == listtilescasino[playerLogicPos]){
+                    name = "CASINO";
+                } else if (pendingLaunch == listilespwr[playerLogicPos]){
+                    name = "PUISSANCE 4";
+                }
             DrawRectangle(150, 450, 500, 60, Fade(BLACK, 0.6f));
             DrawText(TextFormat("Mini-jeu : %s - lancement dans %ds...",
                      name, launchCountdown / 60 + 1),
@@ -207,11 +229,13 @@ int main_board(int mode) {
         }
 
 
-        DrawRectangle(5, 5, 130, 50, Fade(LIGHTGRAY, 0.8f));
+        DrawRectangle(5, 5, 130, 70, Fade(LIGHTGRAY, 0.8f));
         DrawRectangle(8,  8,  14, 14, (Color){ 255, 180, 180, 255 });
         DrawText("Shooter",  26, 10, 12, BLACK);
         DrawRectangle(8, 26,  14, 14, (Color){ 180, 220, 255, 255 });
         DrawText("Casino",   26, 28, 12, BLACK);
+        DrawRectangle(8, 44,  14, 14, (Color){128 ,239, 128  ,255});
+        DrawText("Puissance 4",   26, 46, 12, BLACK);
 
         DrawRectangle(740, 5, 50, 40, Fade(LIGHTGRAY, 0.8f));
         DrawText("p1:",  750, 10, 12, BLACK);
