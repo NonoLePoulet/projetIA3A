@@ -543,8 +543,8 @@ int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
         if (roulette_terminee == 1) {
             timer_fin_manche += GetFrameTime();
             
-            // On laisse les résultats affichés pendant 5 secondes
-            if (timer_fin_manche > 10.0f) {
+            // On laisse les résultats affichés pendant 7 secondes
+            if (timer_fin_manche > 7.0f) {
                 if (vainqueur != -1) {
                     break; // On sort de la boucle while, la partie est finie !
                 } else {
