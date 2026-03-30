@@ -102,7 +102,7 @@ int main_board(int mode) {
 
     int p1points = 0 ;
     int p2points = 0 ;
-    int dealt =0;
+    int dealt =1;
 
 
 
