@@ -239,7 +239,12 @@ int main_board(int mode) {
 
         DrawRectangle(740, 5, 50, 40, Fade(LIGHTGRAY, 0.8f));
         DrawText("p1:",  750, 10, 12, BLACK);
-        DrawText("p2:",  750, 28, 12, BLACK);
+        if (mode == 0){
+            DrawText("p2:",  750, 28, 12, BLACK);
+        }
+        else if (mode ==1){
+            DrawText("IA:",  750, 28, 12, BLACK);
+        }
         DrawText(TextFormat("%d",p1points),775,10,12,BLUE);
         DrawText(TextFormat("%d",p2points),775,28,12,RED);
  
