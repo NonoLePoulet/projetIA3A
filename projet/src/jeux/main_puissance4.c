@@ -139,7 +139,7 @@ int minimax(int grille[LIGNES][COLONNES], int profondeur, int alpha, int beta, i
     if (grille_pleine) return 0;
 
     if (est_maximisant) {
-        int max_eval = -999999;
+        int max_eval = -9999999;
         for (int c = 0; c < COLONNES; c++) {
             int l = trouver_ligne_libre(grille, c);
             if (l != -1) {
@@ -154,7 +154,7 @@ int minimax(int grille[LIGNES][COLONNES], int profondeur, int alpha, int beta, i
         }
         return max_eval;
     } else {
-        int min_eval = 999999;
+        int min_eval = 9999999;
         for (int c = 0; c < COLONNES; c++) {
             int l = trouver_ligne_libre(grille, c);
             if (l != -1) {
@@ -295,8 +295,13 @@ int main_puissance4(int mode_ia)
                     for (int c = 0; c < COLONNES; c++) {
                         int ligne_libre = trouver_ligne_libre(grille, c);
                         if (ligne_libre != -1) {
+
+                            // SECURITE : Au cas où TOUS les coups sont perdants, 
+                            // elle choisit au moins la première colonne valide par défaut
+                            if (meilleure_colonne == -1) meilleure_colonne = c;
+
                             grille[ligne_libre][c] = JOUEUR_2; 
-                            int score_coup = minimax(grille, PROFONDEUR_MAX - 1, -999999, 999999, 0);
+                            int score_coup = minimax(grille, PROFONDEUR_MAX - 1, -9999999, 9999999, 0);
                             grille[ligne_libre][c] = VIDE; 
 
                             if (score_coup > meilleur_score) {
