@@ -239,7 +239,7 @@ int main_puissance4(int mode_ia)
                 int centre_x = offset_x + (c * taille_case) + (taille_case / 2);
                 int centre_y = offset_y + (l * taille_case) + (taille_case / 2);
                 
-                // Soustraire du bleu foncé au bleu foncé donne une transparence parfaite (le trou !)
+                // Soustraire du bleu foncé au bleu foncé donne une transparence parfaite
                 DrawCircle(centre_x, centre_y, taille_case / 2 - 5, DARKBLUE);
             }
         }
@@ -308,8 +308,8 @@ int main_puissance4(int mode_ia)
                     ia_colonne_cible = meilleure_colonne; 
                     ia_calcule = 1; 
                     
-                    // Astuce : On met un minuteur négatif pour forcer l'IA à 
-                    // "réfléchir" sans bouger pendant une demi-seconde !
+                    // On met un minuteur négatif pour forcer l'IA à 
+                    // "réfléchir" sans bouger pendant une demi-seconde
                     ia_timer_mouvement = -30; 
                 } 
                 else if (ia_calcule == 1) {
@@ -325,7 +325,7 @@ int main_puissance4(int mode_ia)
                         } else if (colonne_choisie2 > ia_colonne_cible) {
                             colonne_choisie2--; 
                         } else {
-                            // Le curseur est arrivé au-dessus de la bonne colonne !
+                            // Le curseur est arrivé au-dessus de la bonne colonne
                             // On passe à l'étape 3 sans lâcher le pion tout de suite.
                             ia_calcule = 2; 
                             ia_timer_mouvement = 0; 
@@ -377,7 +377,7 @@ int main_puissance4(int mode_ia)
             WHITE
         );
 
-        // 2. COUCHE DU MILIEU : On dessine les jetons (qui vont glisser derrière le plateau)
+        // 2. COUCHE DU MILIEU : On dessine les jetons
         for (int l = 0; l < LIGNES; l++) {
             for (int c = 0; c < COLONNES; c++) {
                 int pos_x = offset_x + (c * taille_case) - 6;
@@ -392,7 +392,7 @@ int main_puissance4(int mode_ia)
             }
         }
 
-        // 3. COUCHE DU DESSUS : Le plateau percé (le gravel) !
+        // 3. COUCHE DU DESSUS : Le plateau percé (le gravel)
         // On affiche la texture générée avant la boucle. 
         // Note: Les RenderTexture sont inversées verticalement, on met une hauteur négative.
         DrawTextureRec(
@@ -419,7 +419,7 @@ int main_puissance4(int mode_ia)
                     DrawTexture(chat, pos_x, offset_y - 85, WHITE);
                 } else {
                     DrawText("L'IA REFLECHIT ET DEPLACE SON PION...", 400, 90, 20, ORANGE);
-                    // CURSEUR DE L'IA (C'est cette ligne qui manquait !)
+                    // CURSEUR DE L'IA 
                     int pos_x = offset_x + (colonne_choisie2 * taille_case) - 6;
                     DrawTexture(chat, pos_x, offset_y - 85, WHITE); 
                 }
