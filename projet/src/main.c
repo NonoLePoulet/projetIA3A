@@ -3,9 +3,10 @@
 #include "./jeux/main_board.c"
 #include "./jeux/main_shooter.c"
 #include "./jeux/main_casino.c"
+#include "./jeux/main_tron.c"
 
 int main() { 
-    main_casino();
     shooter();
     return 0;
+
 }

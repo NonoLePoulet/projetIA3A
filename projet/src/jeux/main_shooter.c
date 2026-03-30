@@ -6,9 +6,9 @@
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 #define BULLET_MAX 50000
-#define NB_PLAYER 3
+#define NB_PLAYER 2
 
-typedef struct _player{
+typedef struct __player{
     Vector2 speed;
     Vector2 pos;
     int is_alive;
@@ -53,19 +53,24 @@ void shooter() {
     Texture2D bullet = LoadTexture("src/textures/laser_bullet.png");
     Texture2D enemy = LoadTexture("src/textures/Shooter_enemy.png");
     Rectangle enemy_frame_rec = (Rectangle){0.0f,0.0f,enemy.width/8,enemy.height/5};
-    Rectangle bullet_rect = (Rectangle){0.0f, 0.0f, (float)bullet.width, (float)bullet.height};
-    player_list[0].frameRec = (Rectangle){ 0.0f, 0.0f, (float)SpaceShip.width/12, (float)SpaceShip.height/5 };
-    player_list[1].frameRec = (Rectangle){ 0.0f, 0.0f, (float)SpaceShip.width/12, (float)SpaceShip.height/5 };
-    player_list[0].is_alive = 1;
-    player_list[1].is_alive = 1;
-    player_list[0].explode_timer = 0;
-    player_list[1].explode_timer = 0;
+    Rectangle bullet_rect = (Rectangle){0.0f,0.0f,(float)bullet.width,(float)bullet.height};
+    for(int i=0;i<NB_PLAYER;++i){
+        player_list[i].frameRec = (Rectangle){ 0.0f, 0.0f, (float)SpaceShip.width/12, (float)SpaceShip.height/5 };
+        player_list[i].is_alive = 1;
+        player_list[i].explode_timer = 0;
+    }
     int time = 0;
     int framesSpeed = 12;
     float delay = 90.0f;
     float bullet_timer = 0;
     int nb_bullet = 0;
     float textTime = 360;
+    Vector2 TargetPoint = (Vector2){rand()%800,rand()%350+450};
+    Vector2 Trigger;
+    int shouldDodge = 0;
+    Bullet bulletToDodge;
+    int winner;
+    float endTimer = 0.0f;
 
     SetTargetFPS(60);
 
@@ -74,6 +79,10 @@ void shooter() {
         time++;
         bullet_timer++;
         if (delay<0.5f) delay = 0.5f;
+        if (player_list[1].speed.x > 3) player_list[1].speed.x = 3;
+        if (player_list[1].speed.x < -3) player_list[1].speed.x = -3;
+        if (player_list[1].speed.y > 3) player_list[1].speed.y = 3;
+        if (player_list[1].speed.y < -3) player_list[1].speed.y = -3;
 
         if(bullet_timer > delay){
             bullet_timer = 0;
@@ -81,7 +90,7 @@ void shooter() {
             nb_bullet++;
             delay -= 18.0f/(nb_bullet);
         }
-        for(int i=0;i<3;++i){
+        for(int i=0;i<NB_PLAYER;++i){
             if(player_list[i].explode_timer > 55){
                 player_list[i].is_alive = 0;
                 player_list[i].pos = Vector2Zero();
@@ -110,28 +119,59 @@ void shooter() {
 
 //------------------------------------Input player 1-----------------------------------------------
         if(player_list[0].is_alive == 1){
-            if(IsKeyDown(KEY_A)) player_list[0].speed.x = -3;
-            if(IsKeyDown(KEY_D)) player_list[0].speed.x = 3;    
-            if(IsKeyDown(KEY_W)) player_list[0].speed.y = -3;
-            if(IsKeyDown(KEY_S)) player_list[0].speed.y = 3;
-        }
-                
-        if(!IsKeyDown(KEY_A)&&!IsKeyDown(KEY_D)) player_list[0].speed.x = (float) 0;
-        if(!IsKeyDown(KEY_W)&&!IsKeyDown(KEY_S)) player_list[0].speed.y = (float) 0;
-//-------------------------------------------------------------------------------------------------
-//------------------------------------Input player 2-----------------------------------------------
-        if(player_list[1].is_alive == 1){
-            if(IsKeyDown(KEY_LEFT)) player_list[1].speed.x = -3;
-            if(IsKeyDown(KEY_RIGHT)) player_list[1].speed.x = 3;    
-            if(IsKeyDown(KEY_UP)) player_list[1].speed.y = -3;
-            if(IsKeyDown(KEY_DOWN)) player_list[1].speed.y = 3;
+            if(IsKeyDown(KEY_LEFT)) player_list[0].speed.x = -3;
+            if(IsKeyDown(KEY_RIGHT)) player_list[0].speed.x = 3;    
+            if(IsKeyDown(KEY_UP)) player_list[0].speed.y = -3;
+            if(IsKeyDown(KEY_DOWN)) player_list[0].speed.y = 3;
         }  
-        if(!IsKeyDown(KEY_LEFT)&&!IsKeyDown(KEY_RIGHT)) player_list[1].speed.x = (float) 0;
-        if(!IsKeyDown(KEY_UP)&&!IsKeyDown(KEY_DOWN)) player_list[1].speed.y = (float) 0;
+        if(!IsKeyDown(KEY_LEFT)&&!IsKeyDown(KEY_RIGHT) || player_list[0].is_alive != 1) player_list[0].speed.x = (float) 0;
+        if(!IsKeyDown(KEY_UP)&&!IsKeyDown(KEY_DOWN) || player_list[0].is_alive != 1) player_list[0].speed.y = (float) 0;
 //-------------------------------------------------------------------------------------------------
+//--------------------------------------AI Moveset-------------------------------------------------
 
+        Trigger = (Vector2){player_list[1].pos.x,player_list[1].pos.y-70};
+        if(shouldDodge == 0 && player_list[1].is_alive == 1){
+            if(abs(player_list[1].pos.x-TargetPoint.x)<16 && abs(player_list[1].pos.y-TargetPoint.y)<16){
+                TargetPoint = (Vector2){rand()%800,rand()%350+450};
+            }
+            if(TargetPoint.x-player_list[1].pos.x > 0){
+                player_list[1].speed.x = 2;
+            }
+            else if(TargetPoint.x-player_list[1].pos.x < 0){
+                player_list[1].speed.x = -2;
+            }
+            if(TargetPoint.y-player_list[1].pos.y > 0){
+                player_list[1].speed.y = 2;
+            }
+            else if(TargetPoint.y-player_list[1].pos.y < 0){
+                player_list[1].speed.y = -2;
+            }
+            if(abs(player_list[1].pos.x-TargetPoint.x)<10){
+                player_list[1].pos.x = TargetPoint.x;
+                player_list[1].speed.x = 0;
+            }
+            if(abs(player_list[1].pos.y-TargetPoint.y)<10){
+                player_list[1].pos.y = TargetPoint.y;
+                player_list[1].speed.y = 0;
+            }
+        }
+        else if(shouldDodge == 1){
+            if(abs(bulletToDodge.direction.x)<1){
+                player_list[1].speed.x = 3;
+            }
+            else{
+                player_list[1].speed.x = -(bulletToDodge.direction.x/abs(bulletToDodge.direction.x))*3;
+                player_list[1].speed.y = 3;
+            }
+            if(!(abs(Trigger.x-bulletToDodge.pos.x)<70 && abs(Trigger.y-bulletToDodge.pos.y)<30)){
+                shouldDodge = 0;
+            }
+        }
+        else{
+            player_list[1].speed = Vector2Zero();
+        }
 
-        for(int i=0;i<2;++i){
+        for(int i=0;i<NB_PLAYER;++i){
             Vector2Normalize(player_list[i].speed);
 
             player_list[i].pos.x += player_list[i].speed.x;
@@ -149,6 +189,11 @@ void shooter() {
                     player_list[i].cur_frame = 0;
 
                 }
+                if(abs(Trigger.x-bullet_list[j].pos.x)<70 && abs(Trigger.y-bullet_list[j].pos.y)<30){
+                    shouldDodge = 1;
+                    bulletToDodge = bullet_list[j];
+                    TargetPoint = (Vector2){rand()%800,rand()%350+450};
+                }
             }
         }
         for (int j=0;j<nb_bullet;++j){
@@ -156,6 +201,17 @@ void shooter() {
             bullet_list[j].pos.y += bullet_list[j].direction.y;
             if(time - bullet_list[j].timer > 300) bullet_list[j].display = 0;
         }
+
+        if(player_list[0].is_alive == 0 && endTimer == 0.0f){
+            winner = 1;
+            endTimer = time;
+        }
+        if(player_list[1].is_alive == 0 && endTimer == 0.0f){
+            winner = 0;
+            endTimer = time;
+        }
+        if(time-endTimer > 180.0f && endTimer != 0.0f) return winner;
+
         ClearBackground(BLACK);
         BeginDrawing();
 
@@ -166,14 +222,17 @@ void shooter() {
         }
         if(player_list[1].is_alive != 0){
             DrawTextureRec(SpaceShip, player_list[1].frameRec,(Vector2){player_list[1].pos.x-16,player_list[1].pos.y-16}, WHITE);
-            DrawText("Player2",player_list[1].pos.x-18,player_list[1].pos.y+20, 7, BLUE);
+            DrawText("IA",player_list[1].pos.x-7,player_list[1].pos.y+20, 7, BLUE);
         }
+        if(endTimer > 0.0f){
+            DrawText(TextFormat("PLAYER %d WINS",winner + 1),200,400,50,WHITE);
+        }
+
         for (int k=0;k<nb_bullet;++k){
             if (bullet_list[k].display == 1) DrawTexturePro(bullet,bullet_rect,(Rectangle){bullet_list[k].pos.x,bullet_list[k].pos.y,15.0f,15.0f},Vector2Zero(),0.0f,WHITE);
         }
         DrawTexturePro(enemy,enemy_frame_rec,(Rectangle){200,0,400,200},(Vector2){150*sinf(time/60.0f),0},0,WHITE);
-        DrawText(TextFormat("%d",player_list[1].cur_frame), 400, 300, 20, WHITE);
-        DrawText(TextFormat("%d",player_list[1].frameRec.y), 400, 350, 20, WHITE);
+        
 
         EndDrawing();
     }
