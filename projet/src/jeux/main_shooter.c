@@ -41,7 +41,7 @@ void fire_bullet(Bullet* list, int index, int time){
 }
 
 
-void shooter() {
+int shooter() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Monopoly - Animation Pas à Pas");
     Bullet *bullet_list = (Bullet *)RL_CALLOC(BULLET_MAX, sizeof(Bullet));
     Player *player_list = (Player *)RL_CALLOC(NB_PLAYER, sizeof(Player));
@@ -239,5 +239,7 @@ void shooter() {
     UnloadTexture(SpaceShip);
     UnloadTexture(bullet);
     CloseWindow();
+
+    return 0 ;
 
 }
