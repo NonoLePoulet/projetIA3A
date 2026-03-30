@@ -105,6 +105,7 @@ int main_board(int mode) {
     int dealt =0;
 
 
+
     Vector2 visualPos = GetBoardCoordinates(0, cellSize);
 
     while (!WindowShouldClose()) {
@@ -249,6 +250,29 @@ int main_board(int mode) {
         DrawText(TextFormat("%d",p2points),775,28,12,RED);
  
         EndDrawing();
+
+        if (p1points > 4 || p2points >4){ 
+            CloseWindow();
+            InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "FIN");
+            while(!WindowShouldClose()){
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
+                if(p1points>4){
+                    DrawText("P1 a gagné !", 200, 400, 40, BLACK);
+                }
+                if(p2points >4 && mode == 0){
+                    DrawText("P2 a gagné !", 200, 400, 40, BLACK);
+                }
+                if (p2points>4 && mode == 1){
+                    DrawText("L'IA a gagné nullos" , 200,400,40,BLACK);
+                }
+                DrawText("Appuie sur Entrée pour quitter" , 200,600,30,RED);
+                EndDrawing();
+                if(IsKeyPressed(KEY_ENTER)){
+                    CloseWindow();
+                }
+            }
+        }
     }
 
     CloseWindow();
