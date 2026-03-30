@@ -102,7 +102,7 @@ int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
     float angle_bille = 0.0f;
     float rayon_orbite = 180.0f; 
     Vector2 centre_orbite = { 294, 414 }; 
-    float vitesse_rotation = ((rand()%50)+rand()%30)/100.0f; 
+    float vitesse_rotation = ((rand()%50)+rand()%30 +10)/100.0f; //+10 pour éviter le cas où la vitesse est égale à 0
     Vector2 pos_bille = { 0, 0 };
     
     float chrono = 0.0f;          
@@ -292,7 +292,7 @@ int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
             chrono = 0.0f; 
         }
 
-        if (vitesse_rotation < 0.0099f && vitesse_rotation > 0.0f) {
+        if (vitesse_rotation <= 0.01f && vitesse_rotation > 0.0f) {
             vitesse_rotation = 0.0f; 
             roulette_terminee = 1;
             
@@ -560,7 +560,7 @@ int main_casino (int mode_ia) // 0 pour Joueur vs Joueur, 1 pour Joueur vs IA
                     timer = 0;
                     chrono = 0.0f;
                     timer_fin_manche = 0.0f;
-                    vitesse_rotation = ((rand()%50)+rand()%30)/100.0f; // Nouvelle impulsion !
+                    vitesse_rotation = ((rand()%50)+rand()%30 +10)/100.0f; // Nouvelle impulsion !
                     roulette_terminee = 0;
                     numero_gagnant = -1;
                 }
